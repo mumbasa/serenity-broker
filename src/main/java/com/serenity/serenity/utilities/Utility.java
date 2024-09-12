@@ -22,7 +22,8 @@ public class Utility {
 
         for (ErpInventory inv : payload.getItems()) {
             SerenityInventoryItem item = new SerenityInventoryItem();
-            item.setLocation_name(payload.getTo());
+            item.setLocation_name(Utility.getLocationDetails(payload.getTo()).getLocationName());
+            item.setLocation_id(Utility.getLocationDetails(payload.getTo()).getLocationId());
             item.setName(inv.getItem_name());
             item.setCode(inv.getItem_code());
             item.setIn_hand_quantity((int) Double.parseDouble(inv.getQty()));

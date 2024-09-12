@@ -3,6 +3,7 @@ package com.serenity.serenity.erpmodel;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,7 @@ public class ErpNextPayload {
     @JsonProperty("posting_time") 
     private String postingTime;
     private String from;
-    @JsonProperty("to") 
+    @SerializedName("to") 
     private String to;
     private ArrayList<ErpInventory> items;
 

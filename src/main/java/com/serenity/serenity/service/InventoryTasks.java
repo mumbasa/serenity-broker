@@ -47,23 +47,24 @@ public class InventoryTasks {
             SerenityInventoryResponse res = serenitySearch(stock);
             if (res.getTotal() > 0) {
                 SerenityLocation location = Utility.getLocationDetails(stock.getLocation_name());
-                stock.setLocation_id(location.getLocationId());
-                stock.setLocation_name(location.getLocationName());
                 oldEtries.add(stock);
                 LOGGER.info("found item to update");
 
             } else {
                 LOGGER.info("found item to create");
                 SerenityLocation location = Utility.getLocationDetails(stock.getLocation_name());
-                stock.setLocation_id(location.getLocationId());
-                stock.setLocation_name(location.getLocationName());
                 newEntries.add(stock);
             }
 
         }
-        System.err.println("------------------------ create");
+        System.err.println("------------------------ starting");
         if (newEntries.size() > 0) {
+            try{
             serenityCeate(newEntries);
+            }catch(Exception e){
+                LOGGER.error("error occured");
+                e.printStackTrace();
+            }
         }
         if (oldEtries.size() > 0) {
             serenityUpdate(oldEtries.get(0));
@@ -90,6 +91,8 @@ public class InventoryTasks {
     }
 
     public String serenityCeate(List<SerenityInventoryItem> stock) {
+        LOGGER.info("Adding new entries to inventory for "+stock.toString());
+
         String url = "https://stag.api.cloud.serenity.health/v2/inventory";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
