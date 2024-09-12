@@ -19,4 +19,4 @@ ARG JAR_FILE=target/*.jar
 # Copy the built JAR file from the previous stage to the container
 COPY ${JAR_FILE} app.jar
 # Set the command to run the application
-CMD ["java", "-jar", "my-application.jar"]
+CMD ["java", "-jar", "app.jar"]
