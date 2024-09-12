@@ -71,7 +71,6 @@ public class Utility {
 
         for (int i = 0; i < erpNextLocation.length; i++) {
             SerenityLocation location = new SerenityLocation(serenitylocations.get(i).getLocationId(), serenitylocations.get(i).getLocationName());
-            System.err.println(location.getLocationName());
             locations.put(erpNextLocation[i], location);
         }
 
