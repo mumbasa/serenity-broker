@@ -9,9 +9,9 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.serenity.serenity.erpmodel.ErpInventory;
-import com.serenity.serenity.erpmodel.ErpInventoryMessage;
 import com.serenity.serenity.erpmodel.ErpNextPayload;
-import com.serenity.serenity.erpmodel.MessageObjects;
+import com.serenity.serenity.erpmodel.UpdateItem;
+import com.serenity.serenity.erpmodel.UpdatePayload;
 import com.serenity.serenity.model.SerenityInventoryItem;
 import com.serenity.serenity.model.SerenityLocation;
 
@@ -35,24 +35,26 @@ public class Utility {
 
     }
 
-    public static List<SerenityInventoryItem> getSerenityInventoryFromErp(MessageObjects message) {
+  
+    public static List<SerenityInventoryItem> getSerenityInventoryFromErp(UpdatePayload update) {
         List<SerenityInventoryItem> items = new ArrayList<>();
-        for (ErpInventoryMessage mess : message.getMessages()) {
-            for (ErpInventory inv : mess.getPayload().getItems()) {
-                SerenityInventoryItem item = new SerenityInventoryItem();
-                item.setLocation_name(mess.getPayload().getTo());
-                item.setName(inv.getItem_name());
-                item.setCode(inv.getItem_code());
-                item.setIn_hand_quantity(Integer.parseInt(inv.getQty()));
-                item.setReason(mess.getPayload().getPurpose());
-                items.add(item);
-                item.setLocation_id("29e22113-9d7b-46a6-a857-810ca3567ca7");
 
-            }
+        for (UpdateItem inv : update.getItems()) {
+            SerenityInventoryItem item = new SerenityInventoryItem();
+            System.err.println(inv.getTargetWarehouse() +" warehouse");
+            item.setLocation_name(Utility.getLocationDetails(inv.getTargetWarehouse()).getLocationName());
+            item.setLocation_id(Utility.getLocationDetails(inv.getTargetWarehouse()).getLocationId());
+            item.setName(inv.getItemName());
+            item.setCode(inv.getItemCode());
+            item.setIn_hand_quantity((int)(inv.getQuantity()));
+            item.setReason(update.getPurpose());
+            items.add(item);
+
         }
         return items;
 
     }
+
 
     public static SerenityLocation getLocationDetails(String locaton) {
         String serenityLocation = "[{\"locationId\": \"6b46da79-5613-4827-91ae-f46aaf65d4da\",\"locationName\": \"Accra Central (Octagon)\"},"

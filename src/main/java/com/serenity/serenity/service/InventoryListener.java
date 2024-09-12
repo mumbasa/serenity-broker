@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.serenity.serenity.erpmodel.ErpInventoryMessage;
+import com.serenity.serenity.erpmodel.InventoryUpdate;
+import com.serenity.serenity.erpmodel.PayloadHeader;
 import com.serenity.serenity.model.SerenityBroker;
 import com.serenity.serenity.utilities.Utility;
 
@@ -38,23 +40,26 @@ public class InventoryListener {
 
     @RabbitListener(queues = "serenity", concurrency = "4", containerFactory = "createRabbitListenerFactory")
     public void getBillInfo(String message) {
-        ErpInventoryMessage brokerMessage = new Gson().fromJson(message, ErpInventoryMessage.class);
-        LOGGER.info(brokerMessage.getPayload() +" ------------payload");
-        switch (brokerMessage.getEvent_type()) {
+        PayloadHeader headerMessage = new Gson().fromJson(message, PayloadHeader.class);
+
+        switch (headerMessage.getEvent_type()) {
             case "inventory/update" -> {
+                ErpInventoryMessage brokerMessage = new Gson().fromJson(message, ErpInventoryMessage.class);
                       inventoryTasks.serentityInventoryUpdate(Utility.getSerenityInventoryFromErp(brokerMessage.payload),true);
                       System.out.println("update");
 
             }
             case "inventory/create" -> {
-         
+                ErpInventoryMessage brokerMessage = new Gson().fromJson(message, ErpInventoryMessage.class);
                 inventoryTasks.serentityInventoryUpdate(Utility.getSerenityInventoryFromErp(brokerMessage.payload),true);
                 LOGGER.info("create");
             }
 
             case "inventory/adjust" -> {
-                inventoryTasks.serentityInventoryAdjust(Utility.getSerenityInventoryFromErp(brokerMessage.payload),true);
-                LOGGER.info("create");
+                InventoryUpdate brokerMessage = new Gson().fromJson(message, InventoryUpdate.class);
+                System.err.println(brokerMessage.getPayload().getItems());
+                inventoryTasks.serentityInventoryAdjust(Utility.getSerenityInventoryFromErp(brokerMessage.getPayload()),true);
+                LOGGER.info("adjust");
             }
             default ->
             LOGGER.info("default");
