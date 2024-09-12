@@ -42,18 +42,18 @@ public class InventoryListener {
         LOGGER.info(brokerMessage.getPayload() +" ------------payload");
         switch (brokerMessage.getEvent_type()) {
             case "inventory/update" -> {
-                      inventoryTasks.serenitySearch(Utility.getSerenityInventoryFromErp(brokerMessage.payload),true);
+                      inventoryTasks.serentityInventoryUpdate(Utility.getSerenityInventoryFromErp(brokerMessage.payload),true);
                       System.out.println("update");
 
             }
             case "inventory/create" -> {
          
-                inventoryTasks.serenitySearch(Utility.getSerenityInventoryFromErp(brokerMessage.payload),true);
+                inventoryTasks.serentityInventoryUpdate(Utility.getSerenityInventoryFromErp(brokerMessage.payload),true);
                 LOGGER.info("create");
             }
 
             case "inventory/adjust" -> {
-                inventoryTasks.serenitySearch(Utility.getSerenityInventoryFromErp(brokerMessage.payload),true);
+                inventoryTasks.serentityInventoryAdjust(Utility.getSerenityInventoryFromErp(brokerMessage.payload),true);
                 LOGGER.info("create");
             }
             default ->
