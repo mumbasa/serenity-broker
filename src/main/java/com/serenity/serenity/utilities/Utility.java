@@ -41,9 +41,9 @@ public class Utility {
 
         for (UpdateItem inv : update.getItems()) {
             SerenityInventoryItem item = new SerenityInventoryItem();
-            System.err.println(inv.getTargetWarehouse() +" warehouse");
-            item.setLocation_name(Utility.getLocationDetails(inv.getTargetWarehouse()).getLocationName());
-            item.setLocation_id(Utility.getLocationDetails(inv.getTargetWarehouse()).getLocationId());
+            System.err.println(update.getWarehouse() +" warehouse");
+            item.setLocation_name(Utility.getLocationDetails(update.getWarehouse()).getLocationName());
+            item.setLocation_id(Utility.getLocationDetails(update.getWarehouse()).getLocationId());
             item.setName(inv.getItemName());
             item.setCode(inv.getItemCode());
             item.setIn_hand_quantity((int)(inv.getQuantity()));
