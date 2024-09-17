@@ -46,8 +46,12 @@ public class InventoryTasks {
         for (SerenityInventoryItem stock : stocks) {
             SerenityInventoryResponse res = serenitySearch(stock);
             if (res.getTotal() > 0) {
+                LOGGER.info("found item to update quantity "+stock.getIn_hand_quantity()+"=>"+(int)res.getData().get(0).getInHandQuantity());
+
+                stock.setLocation_id(res.getData().get(0).getLocationId());
+                stock.setLocation_name(res.getData().get(0).getLocationName());
+              //  stock.setIn_hand_quantity((int)res.getData().get(0).getInHandQuantity());
                 oldEtries.add(stock);
-                LOGGER.info("found item to update");
 
             } else {
                 LOGGER.info("found item to create");
@@ -66,8 +70,11 @@ public class InventoryTasks {
             }
         }
         if (!oldEtries.isEmpty()) {
-            serenityUpdate(oldEtries.get(0));
+            for(SerenityInventoryItem s : oldEtries){
+                serenityUpdate(s);
         }
+    
+    }
     }
 
     public void serentityInventoryAdjust(List<SerenityInventoryItem> stocks, boolean k) {
@@ -98,9 +105,10 @@ public class InventoryTasks {
             }
         }
         if (!oldEtries.isEmpty()) {
-            serenityUpdate(oldEtries.get(0));
+            for(SerenityInventoryItem s : oldEtries){
+            serenityUpdate(s);
         }
-    }
+    }}
 
     @SuppressWarnings("null")
     public SerenityInventoryResponse serenitySearch(SerenityInventoryItem stock) {
@@ -120,7 +128,7 @@ public class InventoryTasks {
                 stock.setUuid(response.getBody().getData().get(0).getUuid());
                 stock.setLocation_id(response.getBody().getData().get(0).getLocationId());
                 stock.setIn_hand_quantity(qty);
-                System.err.println(qty +" is quantity");
+                System.err.println("Serenity Stock is "+s.getInHandQuantity()+" Addition  is "+stock.getIn_hand_quantity() +" is quantity");
             }
        
         return response.getBody();

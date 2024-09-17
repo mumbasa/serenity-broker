@@ -29,7 +29,7 @@ public class Utility {
             item.setIn_hand_quantity((int) Double.parseDouble(inv.getQty()));
             item.setReason(payload.getPurpose());
             items.add(item);
-
+System.err.println(item.getName() + " loading =>"+ item.getIn_hand_quantity() );
         }
         return items;
 
