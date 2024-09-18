@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -25,6 +26,9 @@ import kong.unirest.core.Unirest;
 @Component
 public class InventoryTasks {
     Logger LOGGER = LoggerFactory.getLogger(this.getClass().getCanonicalName());
+   
+    @Value("${serenity.token}")
+    private String serenityToken;
 
     public String serenityInventoryUpdate(ErpNextIventory inventory) {
 
@@ -117,7 +121,7 @@ public class InventoryTasks {
         String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + stock.getLocation_name();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
-        headers.set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjY1NzczNTAsInN1YiI6IjRkYmQ0NDY4LTBlYzMtNDk2MS1hNjgyLTAxMjQ5MWRhMjQzYyIsInNjb3BlcyI6WyJjdXJyZW50X3VzZXI6cmVhZCJdfQ.CjjIJI4FdzrxR7UY4CQoU_B58wn8SDVxvKvFpDvpGBY"); // Add token if needed
+        headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<SerenityInventoryResponse> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, SerenityInventoryResponse.class);
@@ -142,7 +146,7 @@ public class InventoryTasks {
         String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + stock.getLocation_name();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
-        headers.set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjY1NzczNTAsInN1YiI6IjRkYmQ0NDY4LTBlYzMtNDk2MS1hNjgyLTAxMjQ5MWRhMjQzYyIsInNjb3BlcyI6WyJjdXJyZW50X3VzZXI6cmVhZCJdfQ.CjjIJI4FdzrxR7UY4CQoU_B58wn8SDVxvKvFpDvpGBY"); // Add token if needed
+        headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<SerenityInventoryResponse> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, SerenityInventoryResponse.class);
@@ -166,7 +170,7 @@ public class InventoryTasks {
         String url = "https://stag.api.cloud.serenity.health/v2/inventory";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
-        headers.set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjY1NzczNTAsInN1YiI6IjRkYmQ0NDY4LTBlYzMtNDk2MS1hNjgyLTAxMjQ5MWRhMjQzYyIsInNjb3BlcyI6WyJjdXJyZW50X3VzZXI6cmVhZCJdfQ.CjjIJI4FdzrxR7UY4CQoU_B58wn8SDVxvKvFpDvpGBY"); // Add token if needed
+        headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
         HttpEntity<List<SerenityInventoryItem>> httpEntity = new HttpEntity<>(stock, headers);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
@@ -178,7 +182,7 @@ public class InventoryTasks {
 
         HttpResponse<String> response = Unirest.patch("https://stag.api.cloud.serenity.health/v2/inventory/" + stock.getUuid())
                 .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjY1NzczNTAsInN1YiI6IjRkYmQ0NDY4LTBlYzMtNDk2MS1hNjgyLTAxMjQ5MWRhMjQzYyIsInNjb3BlcyI6WyJjdXJyZW50X3VzZXI6cmVhZCJdfQ.CjjIJI4FdzrxR7UY4CQoU_B58wn8SDVxvKvFpDvpGBY") // Add token if needed
+                .header("Authorization", "Bearer "+serenityToken) // Add token if needed
                 .body(stock)
                 .asString();
         System.err.println(response.getBody());
@@ -192,7 +196,7 @@ public class InventoryTasks {
         String url = "https://stag.api.cloud.serenity.health/v2/inventory";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
-        headers.set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjY1NzczNTAsInN1YiI6IjRkYmQ0NDY4LTBlYzMtNDk2MS1hNjgyLTAxMjQ5MWRhMjQzYyIsInNjb3BlcyI6WyJjdXJyZW50X3VzZXI6cmVhZCJdfQ.CjjIJI4FdzrxR7UY4CQoU_B58wn8SDVxvKvFpDvpGBY"); // Add token if needed
+        headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
         HttpEntity<SerenityInventoryItem> httpEntity = new HttpEntity<>(stock, headers);
         RestTemplate restTemplate = new RestTemplate();
 
