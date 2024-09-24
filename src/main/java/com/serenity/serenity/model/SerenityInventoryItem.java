@@ -13,6 +13,7 @@ public class SerenityInventoryItem {
     private String code;
     private String location_id;
     private String location_name;
+    private String quantity_dispensed;
     private int in_hand_quantity;
     private String reason;
 }

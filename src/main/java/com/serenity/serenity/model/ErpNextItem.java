@@ -21,7 +21,7 @@ public class ErpNextItem {
     public ErpNextItem(SerenityInventoryItem item){
         this.item_code=item.getCode();
         this.item_name=item.getName();
-       // this.qty=item.quantity_dispensed;
+        this.qty=item.getQuantity_dispensed();
         this.uom="Nos";
         this.conversion_factor="1";
 
