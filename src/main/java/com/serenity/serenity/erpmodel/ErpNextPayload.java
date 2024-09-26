@@ -20,9 +20,10 @@ public class ErpNextPayload {
     private String purpose;
     @JsonProperty("posting_time") 
     private String postingTime;
-    private String from;
+    @SerializedName("from")
+    private String fromWarehouse;
     @SerializedName("to") 
-    private String to;
+    private String toWarehouse;
     private ArrayList<ErpInventory> items;
 
 }

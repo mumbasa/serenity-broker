@@ -22,13 +22,22 @@ public class Utility {
 
         for (ErpInventory inv : payload.getItems()) {
             SerenityInventoryItem item = new SerenityInventoryItem();
-            item.setLocation_name(Utility.getLocationDetails(payload.getTo()).getLocationName());
-            item.setLocation_id(Utility.getLocationDetails(payload.getTo()).getLocationId());
-            item.setName(inv.getItem_name());
-            item.setCode(inv.getItem_code());
+            item.setLocation_name(Utility.getLocationDetails(payload.getToWarehouse()).getLocationName());
+            item.setLocation_id(Utility.getLocationDetails(payload.getToWarehouse()).getLocationId());
+            item.setName(inv.getItemName());
+            item.setCode(inv.getItemCode());
             item.setIn_hand_quantity((int) Double.parseDouble(inv.getQty()));
             item.setReason(payload.getPurpose());
+            item.setSellingPrice(inv.getSellingRate());
+            try{
+            item.setSourceName(Utility.getLocationDetails(payload.getFromWarehouse()).getLocationName());
+            item.setSourceId(Utility.getLocationDetails(payload.getFromWarehouse()).getLocationId());
+            }catch(NullPointerException e){
+                System.err.println("This is stores");
+
+            }
             items.add(item);
+
 System.err.println(item.getName() + " loading =>"+ item.getIn_hand_quantity() );
         }
         return items;
@@ -49,6 +58,7 @@ System.err.println(item.getName() + " loading =>"+ item.getIn_hand_quantity() );
             item.setIn_hand_quantity((int)(inv.getQuantity()));
             item.setReason(update.getPurpose());
             items.add(item);
+         
 
         }
         return items;

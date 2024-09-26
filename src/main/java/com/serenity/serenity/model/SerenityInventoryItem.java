@@ -1,5 +1,7 @@
 package com.serenity.serenity.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,5 +17,9 @@ public class SerenityInventoryItem {
     private String location_name;
     private String quantity_dispensed;
     private int in_hand_quantity;
+    @SerializedName("selling_price")
+    private double sellingPrice;
     private String reason;
+    private String sourceName;
+    private String sourceId;
 }

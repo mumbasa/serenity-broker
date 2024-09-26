@@ -1,11 +1,15 @@
 package com.serenity.serenity.erpmodel;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 public class PayloadHeader {
-    public String event_type;
-    public String target;
+    @SerializedName("event_type")
+    private String eventType;
+    private String target;
+    private String headers;
 }

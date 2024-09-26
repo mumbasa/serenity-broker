@@ -42,7 +42,7 @@ public class InventoryListener {
     public void getBillInfo(String message) {
         PayloadHeader headerMessage = new Gson().fromJson(message, PayloadHeader.class);
 
-        switch (headerMessage.getEvent_type()) {
+        switch (headerMessage.getEventType()) {
             case "inventory/update" -> {
                 ErpInventoryMessage brokerMessage = new Gson().fromJson(message, ErpInventoryMessage.class);
                       inventoryTasks.serentityInventoryUpdate(Utility.getSerenityInventoryFromErp(brokerMessage.payload),true);
@@ -50,6 +50,8 @@ public class InventoryListener {
 
             }
             case "inventory/create" -> {
+                LOGGER.info(message);
+
                 ErpInventoryMessage brokerMessage = new Gson().fromJson(message, ErpInventoryMessage.class);
                 inventoryTasks.serentityInventoryUpdate(Utility.getSerenityInventoryFromErp(brokerMessage.payload),true);
                 LOGGER.info("create");
@@ -60,6 +62,14 @@ public class InventoryListener {
                 System.err.println(brokerMessage.getPayload().getItems());
                 inventoryTasks.serentityInventoryAdjust(Utility.getSerenityInventoryFromErp(brokerMessage.getPayload()),true);
                 LOGGER.info("adjust");
+            }
+
+            case "inventory/transfer" -> {
+                LOGGER.info(message);
+
+                ErpInventoryMessage brokerMessage = new Gson().fromJson(message, ErpInventoryMessage.class);
+                inventoryTasks.serentityTransfer(Utility.getSerenityInventoryFromErp(brokerMessage.getPayload()));
+                LOGGER.info("transer");
             }
             default ->
             LOGGER.info("default");

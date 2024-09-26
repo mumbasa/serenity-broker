@@ -139,6 +139,82 @@ public class InventoryTasks {
     }
 
 
+
+    public void serentityTransfer(List<SerenityInventoryItem> stocks) {
+        for(SerenityInventoryItem item :stocks){
+ 
+         serenitySearchF(item);
+ 
+        }
+     }
+ 
+ 
+ 
+ 
+     @SuppressWarnings("null")
+     public void serenitySearchF(SerenityInventoryItem stock) {
+         String[] locations = {stock.getLocation_name(),stock.getSourceName()};
+         List<SerenityInventoryItem> items = new ArrayList<>();
+         LOGGER.info("Searching for "+stock.getName());
+         int count=0; //this is to create a counter to enable the substraction from the source stock
+         for(String location : locations){
+            System.err.println(location +"------------------");
+         String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + location;
+         HttpHeaders headers = new HttpHeaders();
+         headers.set("Content-Type", "application/json");
+         headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
+         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+         RestTemplate restTemplate = new RestTemplate();
+         ResponseEntity<SerenityInventoryResponse> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, SerenityInventoryResponse.class);
+ //setting the stock with the data in serenity
+             if (response.getBody().getTotal() > 0) {
+                SerenityInventoryItem item = new SerenityInventoryItem();
+                 SerenityStock s = response.getBody().getData().get(0);
+                 int qty = (int) s.getInHandQuantity()+stock.getIn_hand_quantity();
+                 item.setUuid(response.getBody().getData().get(0).getUuid());
+                 item.setReason(stock.getReason());
+
+                 if(count>0){
+                    
+                     item.setLocation_id(stock.getSourceId());
+                     item.setLocation_name(stock.getSourceName());
+                     item.setIn_hand_quantity((int)(s.getInHandQuantity()-stock.getIn_hand_quantity()));
+                     item.setName(stock.getName());
+                     item.setCode(stock.getCode());
+                     LOGGER.info(stock.getIn_hand_quantity()+"\tSubstacting stock "+s.getInHandQuantity());
+                 }else{
+                    item.setLocation_id(stock.getLocation_id());
+                    item.setLocation_name(stock.getLocation_name());
+                    item.setIn_hand_quantity((int)(s.getInHandQuantity()+stock.getIn_hand_quantity()));
+                    item.setName(stock.getName());
+                    item.setCode(stock.getCode());
+                    LOGGER.info(stock.getIn_hand_quantity()+"\tTransfering stock"+s.getInHandQuantity());
+
+
+                 }
+                 LOGGER.info(location +"------------------\t"+stock.getLocation_name()+" ---count "+stock.getIn_hand_quantity());
+                 items.add(item);
+                
+             }else{
+ 
+                 serenityCeate(stock);
+ 
+             }
+             count++;
+         }
+         System.err.println(items.size());
+         for (SerenityInventoryItem it : items){
+ System.err.println("Syncing for \t"+it.getLocation_name()+"\t"+it.getName());
+             serenityUpdate(it);
+ 
+ 
+ 
+         }
+ 
+     }
+
+
+
     @SuppressWarnings("null")
     public SerenityInventoryResponse stockCount(SerenityInventoryItem stock) {
         LOGGER.info("Searching for "+stock.getName());
@@ -172,6 +248,19 @@ public class InventoryTasks {
         headers.set("Content-Type", "application/json");
         headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
         HttpEntity<List<SerenityInventoryItem>> httpEntity = new HttpEntity<>(stock, headers);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+        return response.getBody();
+    }
+
+    public String serenityCeate(SerenityInventoryItem stock) {
+        LOGGER.info("Adding new entries to inventory for "+stock.toString());
+
+        String url = "https://stag.api.cloud.serenity.health/v2/inventory";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
+        HttpEntity<SerenityInventoryItem> httpEntity = new HttpEntity<>(stock, headers);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
         return response.getBody();
