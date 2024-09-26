@@ -32,7 +32,7 @@ public class SerenityApplication {
 	@PostConstruct
 	 void load() throws FileNotFoundException {
         
-            JsonReader jsonReader = new JsonReader(new FileSystemResource(ResourceUtils.getFile("classpath:baba.json")),
+            JsonReader jsonReader = new JsonReader(new FileSystemResource(ResourceUtils.getFile("classpath:new.json")),
                     "name", "gender", "patient_id", "dob", "mobile");
 
             List<Document> documents = jsonReader.get();
