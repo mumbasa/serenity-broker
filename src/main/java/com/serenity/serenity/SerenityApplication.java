@@ -1,5 +1,6 @@
 package com.serenity.serenity;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.springframework.ai.document.Document;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.util.ResourceUtils;
 
 import jakarta.annotation.PostConstruct;
 
@@ -28,9 +30,9 @@ public class SerenityApplication {
 	}
 
 	@PostConstruct
-	 void load() {
+	 void load() throws FileNotFoundException {
         
-            JsonReader jsonReader = new JsonReader(new FileSystemResource(patientsData),
+            JsonReader jsonReader = new JsonReader(new FileSystemResource(ResourceUtils.getFile("classpath:baba.json")),
                     "name", "gender", "patient_id", "dob", "mobile");
 
             List<Document> documents = jsonReader.get();
