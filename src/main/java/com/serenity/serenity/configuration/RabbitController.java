@@ -8,6 +8,7 @@ import org.springframework.ai.reader.JsonReader;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,8 @@ public class RabbitController {
    @Autowired
     private VectorStore vectorStore;
 
-
+	@Value("${patients.data}")
+	String patientsData;
    
     public void create() {
         System.err.println(" startring");
@@ -58,7 +60,7 @@ public class RabbitController {
     @GetMapping("/baba")
      void load() {
         
-            JsonReader jsonReader = new JsonReader(new FileSystemResource("/root/new.json"),
+            JsonReader jsonReader = new JsonReader(new FileSystemResource(patientsData),
                     "name", "gender", "patient_id", "dob", "mobile");
 
             List<Document> documents = jsonReader.get();
