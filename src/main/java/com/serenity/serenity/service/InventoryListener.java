@@ -24,9 +24,9 @@ public class InventoryListener {
 
     @RabbitListener(queues = "erpnext", concurrency = "4", containerFactory = "createRabbitListenerFactory")
     public void receiveMessage(String message) {
-      SerenityBroker brokerMessage = new Gson().fromJson(message, SerenityBroker.class);
-        LOGGER.info(brokerMessage.toString());
-        
+     SerenityBroker brokerMessage = new Gson().fromJson(message, SerenityBroker.class);
+        LOGGER.info(message);
+       
         switch (brokerMessage.getEventType()) {
             
             case "inventory/dispense" -> {

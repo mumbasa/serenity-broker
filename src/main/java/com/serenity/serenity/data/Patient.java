@@ -6,12 +6,16 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Patient {
-private String lastName;
 private String firstName;
+private String lastname;
 private String name;
-private String patientId;
+private String mobile;
+private String mrNumber;
 private String id;
+private String dob;
 private String gender;
 private double confidence;
 private String source;
+
+
 }

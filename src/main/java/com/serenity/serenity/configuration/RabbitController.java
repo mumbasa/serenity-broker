@@ -1,26 +1,25 @@
 package com.serenity.serenity.configuration;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.ai.document.Document;
-import org.springframework.ai.reader.JsonReader;
-import org.springframework.ai.vectorstore.SearchRequest;
-import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.serenity.serenity.data.Patient;
+import com.serenity.serenity.data.PatientMapping;
+import com.serenity.serenity.dto.PatientMappingDTO;
 import com.serenity.serenity.model.SerenityInventoryItem;
 import com.serenity.serenity.model.SerenityInventoryResponse;
 import com.serenity.serenity.service.InventoryTasks;
+import com.serenity.serenity.service.PatientService;
+
 
 @RestController
 @RequestMapping("/patient")
@@ -30,25 +29,25 @@ public class RabbitController {
     InventoryTasks tasks;
 
    @Autowired
-    private VectorStore vectorStore;
+    private PatientService patientService;
 
-	@Value("${patients.data}")
-	String patientsData;
-   
-    public void create() {
-        System.err.println(" startring");
-        Document a = new Document( "Prometheus collects metrics from targets by scraping metrics HTTP endpoints. Since Prometheus exposes data in the same manner about itself, it can also scrape and monitor its own health.");
-       Document b = new Document("Prometheus local time series database stores data in a custom, highly efficient format on local storage.");
-       List<Document> c = new ArrayList<>();
-       c.add(a);
-       c.add(b);
-       vectorStore.add(c);
+    @GetMapping("/search/patient")
+    public ResponseEntity<List<Patient>>  list(@RequestParam("query") String query) {
+      
+        return ResponseEntity.ok(patientService.list(query));
     }
 
-    @GetMapping
-    public String list(@RequestParam("query") String query) {
-        List<Document> results = vectorStore.similaritySearch(SearchRequest.query(query).withTopK(5));
-        return results.toString();
+
+    @GetMapping("/patient/mapping")
+    public ResponseEntity<List<PatientMapping>>  patientMapping(@RequestParam("query") String query) {
+      
+        return ResponseEntity.ok(patientService.guestPatientMapping(query));
+    }
+
+    @PostMapping("/patient/mapping")
+    public ResponseEntity<List<PatientMapping>>  patientMapping(@RequestBody List<PatientMapping> mapping) {
+      
+        return ResponseEntity.ok(patientService.savePatientMapping(mapping));
     }
     @GetMapping("dispense")
     public ResponseEntity<SerenityInventoryResponse> mains(@RequestParam String name,@RequestParam String location) {
@@ -57,14 +56,5 @@ public class RabbitController {
         stock.setLocation_name(location);
         return new ResponseEntity<SerenityInventoryResponse>(tasks.serenitySearch(stock),HttpStatus.OK);
     }
-    @GetMapping("/baba")
-     void load() {
-        
-            JsonReader jsonReader = new JsonReader(new FileSystemResource(patientsData),
-                    "name", "gender", "patient_id", "dob", "mobile");
-
-            List<Document> documents = jsonReader.get();
-            
-            this.vectorStore.add(documents);
-  }
+   
 }

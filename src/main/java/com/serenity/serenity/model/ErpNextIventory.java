@@ -3,6 +3,8 @@ package com.serenity.serenity.model;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.serenity.serenity.utilities.Utility;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +34,7 @@ public class ErpNextIventory {
         this.setPlc_conversion_rate(1);
         this.setDelivery_date(Calendar.getInstance().toString());
         this.setDocstatus(1);
-        this.setSet_warehouse(payload.getLocation_name());
+        this.setSet_warehouse(Utility.getErpnextLocation(payload.getLocation_name()));
         payload.items.forEach(e ->{ 
             items.add(new ErpNextItem(e));
 
