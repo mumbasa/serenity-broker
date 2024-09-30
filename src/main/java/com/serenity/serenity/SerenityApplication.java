@@ -15,8 +15,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.util.ResourceUtils;
 
-import jakarta.annotation.PostConstruct;
-
 
 
 @SpringBootApplication
@@ -33,7 +31,7 @@ public class SerenityApplication {
 		SpringApplication.run(SerenityApplication.class, args);
 	}
 
-       @PostConstruct 
+      // @PostConstruct 
 	 void load() throws FileNotFoundException {
                 logger.info("working to add");
 
