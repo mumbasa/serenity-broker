@@ -31,14 +31,14 @@ public class RabbitController {
    @Autowired
     private PatientService patientService;
 
-    @GetMapping("/search/patient")
+    @GetMapping("/search")
     public ResponseEntity<List<Patient>>  list(@RequestParam("query") String query) {
       
         return ResponseEntity.ok(patientService.list(query));
     }
 
 
-    @GetMapping("/patient/mapping")
+    @GetMapping("/mapping")
     public ResponseEntity<List<PatientMapping>>  patientMapping(@RequestParam("query") String query) {
       
         return ResponseEntity.ok(patientService.guestPatientMapping(query));

@@ -21,7 +21,7 @@ public class ErpInventory {
     private String qty;
     private String uom;
     @SerializedName("selling_rate")
-    private int sellingRate;
+    private double sellingRate;
     @SerializedName("valuation_rate")
     private double valuationRate;
 
