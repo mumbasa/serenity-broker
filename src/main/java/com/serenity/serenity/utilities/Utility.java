@@ -61,6 +61,7 @@ System.err.println(item.getName() + " loading =>"+ item.getIn_hand_quantity() );
             item.setCode(inv.getItemCode());
             item.setIn_hand_quantity((int)(inv.getQuantity()));
             item.setReason(update.getPurpose());
+            item.setSellingPrice(inv.getSellingRate());
             items.add(item);
          
 
