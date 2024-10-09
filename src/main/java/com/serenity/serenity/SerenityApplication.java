@@ -17,6 +17,8 @@ import org.springframework.util.ResourceUtils;
 
 import com.serenity.serenity.service.PatientService;
 
+import jakarta.annotation.PostConstruct;
+
 
 
 @SpringBootApplication
@@ -36,7 +38,7 @@ public class SerenityApplication {
 		SpringApplication.run(SerenityApplication.class, args);
 	}
 
-    //  @PostConstruct 
+      @PostConstruct 
 	 void load() throws FileNotFoundException {
                 logger.info("working to add");
 
@@ -48,10 +50,10 @@ public class SerenityApplication {
 
             List<Document> documents = jsonReader.get();
            
-            for (int i=0; i<Math.ceil(documents.size()/100) ; i++){
+            for (int i=0; i<Math.ceil(documents.size()/1000) ; i++){
                 logger.info("adding");
 
-               this.vectorStore.add( documents.subList(i*100,(i*100)+100));
+               this.vectorStore.add( documents.subList(i*1000,(i*1000)+1000));
             }
             
       
