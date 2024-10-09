@@ -1,7 +1,9 @@
 package com.serenity.serenity.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +85,58 @@ public class InventoryTasks {
 
     public void serentityInventoryAdjust(List<SerenityInventoryItem> stocks, boolean k) {
         System.err.println("------------------------ start");
+        Map<String,SerenityInventoryItem> itemMap = new HashMap<>();
+        LOGGER.info("Creating map");
+    //adding same items irrespective of batch numbers
+        stocks.stream().forEach(e ->{
+        
+            if(itemMap.containsKey(e.getName())){
+                SerenityInventoryItem item =  itemMap.get(e.getName());
+                item.setIn_hand_quantity(item.getIn_hand_quantity()+e.getIn_hand_quantity());
+                itemMap.replace(e.getName(), item);
+            }else{
+                itemMap.put(e.getName(), e);
+                
+            }
+       });
+
+        List<SerenityInventoryItem> newEntries = new ArrayList<>();
+        List<SerenityInventoryItem> oldEtries = new ArrayList<>();
+        //looping to separate the new from the old stock
+
+        for (SerenityInventoryItem stock : itemMap.values()) {
+            SerenityInventoryResponse res = stockCount(stock);
+            if (res.getTotal() > 0) {
+                oldEtries.add(stock);
+                LOGGER.info("found item to update");
+
+            } else {
+                LOGGER.info("found item to create");
+                newEntries.add(stock);
+            }
+
+        }
+        System.err.println("------------------------ Adjusting");
+     //processing the lists
+        if (!newEntries.isEmpty()) {
+            try{
+            serenityCeate(newEntries);
+            }catch(Exception e){
+                LOGGER.error("error occured");
+                e.printStackTrace();
+            }
+        }
+        if (!oldEtries.isEmpty()) {
+            for(SerenityInventoryItem s : oldEtries){
+            serenityUpdate(s);
+        }
+    }}
+
+
+
+
+    public void serentityInventoryAdjust2(List<SerenityInventoryItem> stocks, boolean k) {
+        System.err.println("------------------------ start");
         List<SerenityInventoryItem> newEntries = new ArrayList<>();
         List<SerenityInventoryItem> oldEtries = new ArrayList<>();
         //looping to separate the new from the old stock
@@ -113,6 +167,7 @@ public class InventoryTasks {
             serenityUpdate(s);
         }
     }}
+
 
     @SuppressWarnings("null")
     public SerenityInventoryResponse serenitySearch(SerenityInventoryItem stock) {

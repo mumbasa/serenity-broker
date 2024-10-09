@@ -1,4 +1,4 @@
-package com.serenity.serenity.configuration;
+package com.serenity.serenity.controller;
 
 import java.util.List;
 
@@ -12,24 +12,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.serenity.serenity.data.Patient;
-import com.serenity.serenity.data.PatientMapping;
+import com.serenity.serenity.data.his.EncounterNote;
+import com.serenity.serenity.data.his.Patient;
+import com.serenity.serenity.data.his.PatientMapping;
 import com.serenity.serenity.dto.PatientMappingDTO;
 import com.serenity.serenity.model.SerenityInventoryItem;
 import com.serenity.serenity.model.SerenityInventoryResponse;
 import com.serenity.serenity.service.InventoryTasks;
+import com.serenity.serenity.service.NoteService;
 import com.serenity.serenity.service.PatientService;
 
 
 @RestController
 @RequestMapping("/patient")
-public class RabbitController {
+public class PatientController {
 
     @Autowired
     InventoryTasks tasks;
 
    @Autowired
     private PatientService patientService;
+
+    @Autowired
+    NoteService noteService;
 
     @GetMapping("/search")
     public ResponseEntity<List<Patient>>  list(@RequestParam("query") String query) {
@@ -49,6 +54,13 @@ public class RabbitController {
       
         return ResponseEntity.ok(patientService.savePatientMapping(mapping));
     }
+
+    @PostMapping("/patient/encounter/notes")
+    public ResponseEntity<List<EncounterNote>>  getEncounterNotes(@RequestBody List<String> ids) {
+      
+        return ResponseEntity.ok(noteService.getNotes(ids));
+    }
+
     @GetMapping("dispense")
     public ResponseEntity<SerenityInventoryResponse> mains(@RequestParam String name,@RequestParam String location) {
         SerenityInventoryItem stock = new SerenityInventoryItem();

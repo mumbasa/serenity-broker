@@ -1,4 +1,4 @@
-package com.serenity.serenity.data;
+package com.serenity.serenity.data.his;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 public class PatientMapping {
 @Id
-@GeneratedValue(strategy=GenerationType.AUTO)
+@GeneratedValue(strategy=GenerationType.SEQUENCE)
 private long id;
 private String source;
 private String sourceId;

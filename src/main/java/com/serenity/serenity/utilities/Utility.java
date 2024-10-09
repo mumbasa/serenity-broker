@@ -11,7 +11,7 @@ import org.springframework.ai.document.Document;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.serenity.serenity.data.Patient;
+import com.serenity.serenity.data.his.Patient;
 import com.serenity.serenity.erpmodel.ErpInventory;
 import com.serenity.serenity.erpmodel.ErpNextPayload;
 import com.serenity.serenity.erpmodel.UpdateItem;
@@ -42,7 +42,7 @@ public class Utility {
             }
             items.add(item);
 
-System.err.println(item.getName() + " loading =>"+ item.getIn_hand_quantity() );
+                System.err.println(item.getName() + " loading =>"+ item.getIn_hand_quantity() );
         }
         return items;
 

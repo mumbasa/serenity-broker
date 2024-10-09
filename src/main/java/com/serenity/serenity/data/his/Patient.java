@@ -1,4 +1,4 @@
-package com.serenity.serenity.data;
+package com.serenity.serenity.data.his;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

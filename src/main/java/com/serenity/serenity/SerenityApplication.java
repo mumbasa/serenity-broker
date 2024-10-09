@@ -15,6 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.util.ResourceUtils;
 
+import com.serenity.serenity.service.PatientService;
+
 
 
 @SpringBootApplication
@@ -22,6 +24,9 @@ public class SerenityApplication {
 
    @Autowired
     private VectorStore vectorStore;
+
+    @Autowired
+    PatientService patientService;
 
 	@Value("${patients.data}")
 	String patientsData;
@@ -31,14 +36,14 @@ public class SerenityApplication {
 		SpringApplication.run(SerenityApplication.class, args);
 	}
 
-      // @PostConstruct 
+    //  @PostConstruct 
 	 void load() throws FileNotFoundException {
                 logger.info("working to add");
 
          //   JsonReader jsonReader = new JsonReader(new FileSystemResource(ResourceUtils.getFile("classpath:new.json")),
          //           "name", "gender", "patient_id", "dob", "mobile");
          JsonReader jsonReader = new JsonReader(new FileSystemResource(ResourceUtils.getFile("classpath:all.json")),
-         "name", "gender", "mrNumber", "dob", "mobile","lastname","firstname","id","source");
+         "name", "gender", "mrNumber", "dob", "mobile","id","source");
          logger.info("found to add");
 
             List<Document> documents = jsonReader.get();
@@ -51,4 +56,5 @@ public class SerenityApplication {
             
       
   }
+
 }

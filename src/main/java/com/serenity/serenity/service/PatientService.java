@@ -8,9 +8,11 @@ import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.serenity.serenity.data.Patient;
-import com.serenity.serenity.data.PatientMapping;
-import com.serenity.serenity.repository.PatientMappingRepository;
+import com.serenity.serenity.data.his.EncounterNote;
+import com.serenity.serenity.data.his.Patient;
+import com.serenity.serenity.data.his.PatientMapping;
+import com.serenity.serenity.repository.his.EncounterNoteRepository;
+import com.serenity.serenity.repository.his.PatientMappingRepository;
 import com.serenity.serenity.utilities.Utility;
 
 @Service
@@ -20,6 +22,9 @@ public class PatientService {
     private VectorStore vectorStore;
     @Autowired
     private PatientMappingRepository patientMappingRepository;
+
+    @Autowired
+    EncounterNoteRepository encounterNoteRepository;
 
     public List<Patient> list(String query) {
 
@@ -38,6 +43,15 @@ public class PatientService {
     public List<PatientMapping> savePatientMapping(List<PatientMapping> mapping) {
 
         return patientMappingRepository.saveAll(mapping);
+
+    }
+
+
+    public void saveEncounter(){
+   EncounterNote n = new EncounterNote();
+   n.setDataSource("his");
+   n.setNote("Fsfsdfsdaf");
+   encounterNoteRepository.save(n);
 
     }
 }
