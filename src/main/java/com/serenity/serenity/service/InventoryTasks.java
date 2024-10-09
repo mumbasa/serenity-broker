@@ -91,7 +91,7 @@ public class InventoryTasks {
         stocks.stream().forEach(e ->{
         
             if(itemMap.containsKey(e.getName())){
-                SerenityInventoryItem item =  itemMap.get(e.getName());
+                SerenityInventoryItem item =  itemMap.get(e.getCode());
                 item.setIn_hand_quantity(item.getIn_hand_quantity()+e.getIn_hand_quantity());
                 itemMap.replace(e.getName(), item);
             }else{
