@@ -1,4 +1,4 @@
-package com.serenity.serenity.repository.his;
+package com.serenity.serenity.repository;
 
 import java.util.List;
 

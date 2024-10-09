@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import com.serenity.serenity.data.his.EncounterNote;
 import com.serenity.serenity.data.his.Patient;
 import com.serenity.serenity.data.his.PatientMapping;
-import com.serenity.serenity.repository.his.EncounterNoteRepository;
-import com.serenity.serenity.repository.his.PatientMappingRepository;
+import com.serenity.serenity.repository.EncounterNoteRepository;
+import com.serenity.serenity.repository.PatientMappingRepository;
 import com.serenity.serenity.utilities.Utility;
 
 @Service

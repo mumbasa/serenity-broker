@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.serenity.serenity.data.his.EncounterNote;
-import com.serenity.serenity.repository.his.EncounterNoteRepository;
+import com.serenity.serenity.repository.EncounterNoteRepository;
 
 
 
@@ -119,11 +119,20 @@ notes.stream().sorted(Comparator.comparing(EncounterNote::getCreatedAt)).toList(
 
     }
 
-public List<EncounterNote> getNotes(List<String> ids){
+public List<EncounterNote> getNotes(String ids){
 
-return encounterNoteRepository.findAllById(ids);
+return encounterNoteRepository.findByPatientMrNumber(ids);
 
 }
+
+
+public List<EncounterNote> getNotes(List<String> ids){
+    System.err.println(ids);
+
+    return encounterNoteRepository.findByPatientMrNumberIn(ids);
+    
+    }
+    
 
 
   

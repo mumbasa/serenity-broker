@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.util.ResourceUtils;
 
 import com.serenity.serenity.service.PatientService;
@@ -20,6 +21,7 @@ import com.serenity.serenity.service.PatientService;
 
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackages="com.serenity.serenity.repository")
 public class SerenityApplication {
 
    @Autowired
