@@ -25,6 +25,9 @@ public class ErpInventory {
     @SerializedName("valuation_rate")
     private double valuationRate;
 
+    @SerializedName("batch_number")
+    private String batchNumber;
+
     @JsonProperty("conversion_factor") 
     private String conversionFactor;
 }

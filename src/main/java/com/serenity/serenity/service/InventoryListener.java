@@ -68,8 +68,9 @@ public class InventoryListener {
                 LOGGER.info(message);
 
                 ErpInventoryMessage brokerMessage = new Gson().fromJson(message, ErpInventoryMessage.class);
-                inventoryTasks.serentityTransfer(Utility.getSerenityInventoryFromErp(brokerMessage.getPayload()));
-                LOGGER.info("transer");
+
+               inventoryTasks.serentityTransfer(Utility.getSerenityInventoryFromErp(brokerMessage.getPayload()));
+                LOGGER.info(brokerMessage.toString());
             }
             default ->
             LOGGER.info("default");

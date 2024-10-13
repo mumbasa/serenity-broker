@@ -221,7 +221,10 @@ public class InventoryTasks {
          HttpEntity<String> httpEntity = new HttpEntity<>(headers);
          RestTemplate restTemplate = new RestTemplate();
          ResponseEntity<SerenityInventoryResponse> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, SerenityInventoryResponse.class);
- //setting the stock with the data in serenity
+        LOGGER.info(response.getBody().toString());
+ 
+ 
+         //setting the stock with the data in serenity
              if (response.getBody().getTotal() > 0) {
                 SerenityInventoryItem item = new SerenityInventoryItem();
                  SerenityStock s = response.getBody().getData().get(0);
@@ -251,9 +254,11 @@ public class InventoryTasks {
                  items.add(item);
                 
              }else{
- 
+
+                //if it is target 
+                if(count==0){
                  serenityCeate(stock);
- 
+                }
              }
              count++;
          }
@@ -358,7 +363,7 @@ public class InventoryTasks {
         String json = gson.toJson(inventory);
         System.err.println(json);
 
-        String endpoint = message.getTarget();
+        String endpoint = "http://52.212.103.219:8001/api/resource/Delivery Note";
         HttpHeaders headers = new HttpHeaders();
 
         headers.set("Content-Type", "application/json");

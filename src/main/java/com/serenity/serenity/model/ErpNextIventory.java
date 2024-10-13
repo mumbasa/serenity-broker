@@ -21,6 +21,7 @@ public class ErpNextIventory {
     public String delivery_date;
     public int docstatus;
     public String set_warehouse;
+    public String batch_number;
     public ArrayList<ErpNextItem> items;
 
     public ErpNextIventory(SerenityPayload payload) {
