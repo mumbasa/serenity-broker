@@ -83,7 +83,7 @@ public class InventoryTasks {
     }
     }
 
-    public void serentityInventoryAdjust(List<SerenityInventoryItem> stocks, boolean k) {
+    public void serentityInventoryAdjust2(List<SerenityInventoryItem> stocks, boolean k) {
         System.err.println("------------------------ start");
         Map<String,SerenityInventoryItem> itemMap = new HashMap<>();
         LOGGER.info("Creating map");
@@ -135,7 +135,7 @@ public class InventoryTasks {
 
 
 
-    public void serentityInventoryAdjust2(List<SerenityInventoryItem> stocks, boolean k) {
+    public void serentityInventoryAdjust(List<SerenityInventoryItem> stocks, boolean k) {
         System.err.println("------------------------ start");
         List<SerenityInventoryItem> newEntries = new ArrayList<>();
         List<SerenityInventoryItem> oldEtries = new ArrayList<>();
@@ -172,8 +172,8 @@ public class InventoryTasks {
     @SuppressWarnings("null")
     public SerenityInventoryResponse serenitySearch(SerenityInventoryItem stock) {
         LOGGER.info("Searching for "+stock.getName());
-
-        String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + stock.getLocation_name();
+        String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + stock.getLocation_name()+"&batch_number="+stock.getBatchNumber();
+        //String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + stock.getLocation_name();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
@@ -214,7 +214,7 @@ public class InventoryTasks {
          int count=0; //this is to create a counter to enable the substraction from the source stock
          for(String location : locations){
             System.err.println(location +"------------------");
-         String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + location;
+         String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + location+"&batch_number="+stock.getBatchNumber();
          HttpHeaders headers = new HttpHeaders();
          headers.set("Content-Type", "application/json");
          headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
@@ -273,8 +273,9 @@ public class InventoryTasks {
     @SuppressWarnings("null")
     public SerenityInventoryResponse stockCount(SerenityInventoryItem stock) {
         LOGGER.info("Searching for "+stock.getName());
+        String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + stock.getLocation_name()+"&batch_number="+stock.getBatchNumber();
 
-        String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + stock.getLocation_name();
+        //String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + stock.getLocation_name();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed

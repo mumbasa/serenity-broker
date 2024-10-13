@@ -1,5 +1,6 @@
 package com.serenity.serenity.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
@@ -21,5 +22,8 @@ public class SerenityInventoryItem {
     private double sellingPrice;
     private String reason;
     private String sourceName;
+    @SerializedName("batch_number")
+    @JsonProperty("batch_number")
+    private String batchNumber;
     private String sourceId;
 }
