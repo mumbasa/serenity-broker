@@ -372,9 +372,16 @@ public class InventoryTasks {
         HttpEntity<ErpNextIventory> httpEntity = new HttpEntity<>(inventory, headers);
 
         RestTemplate restTemplate = new RestTemplate();
+        try{
         ResponseEntity<String> response = restTemplate.exchange(endpoint, HttpMethod.POST, httpEntity, String.class);
 
         return response.getBody();
+
+        }catch(Exception e){
+
+            e.printStackTrace();
+            return "failed";
+        }
 
     }
 
