@@ -108,7 +108,7 @@ public class Utility {
                 + "{\"locationId\": \"b60c55f5-63dd-4ba2-9fe9-8192f57aaed2\",\"locationName\": \"Tema Primary Care\"},"
                 + "{\"locationId\": \"a79ae42b-03b7-4f5e-ac1a-cd42729c0b04\",\"locationName\": \"Takoradi Primary Care\"},"
                 + "{\"locationId\": \"29e22113-9d7b-46a6-a857-810ca3567ca7\",\"locationName\": \"Airport Main\"},"
-                + "{\"locationId\": \"25d3f170-2c76-413f-b4e0-7c09b4847b68\",\"locationName\": \"Kumasi\"}"
+                + "{\"locationId\": \"25d3f170-2c76-413f-b4e0-7c09b4847b68\",\"locationName\": \"Kumasi\"},"
                 + "{\"locationId\": \"2550dc16-3f64-4cee-b808-6c13b255d159\",\"locationName\": \"Ward - Airport Main\"}"+
                 "]";
         Gson gson = new Gson();

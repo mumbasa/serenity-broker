@@ -18,6 +18,7 @@ public class SerenityInventoryItem {
     private String location_name;
     private String quantity_dispensed;
     private int in_hand_quantity;
+    @JsonProperty("batch_number")
     @SerializedName("selling_price")
     private double sellingPrice;
     private String reason;

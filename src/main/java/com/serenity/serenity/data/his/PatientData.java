@@ -1,6 +1,7 @@
 package com.serenity.serenity.data.his;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -27,25 +28,25 @@ public class PatientData {
     @JsonProperty("created_at")
     private String createdAt;
     
-    @JsonProperty("mobile")
+    @SerializedName("mobile")
     private String mobile;
     
     @JsonProperty("national_mobile_number")
     private String nationalMobileNumber;
     
-    @JsonProperty("first_name")
+    @SerializedName("first_name")
     private String firstName;
     
-    @JsonProperty("last_name")
+    @SerializedName("last_name")
     private String lastName;
     
-    @JsonProperty("email")
+    @SerializedName("email")
     private String email;
     
-    @JsonProperty("birth_date")
+    @SerializedName("birth_date")
     private String birthDate;
     
-    @JsonProperty("gender")
+    @SerializedName("gender")
     private String gender;
     
     @JsonProperty("nationality")
@@ -60,10 +61,10 @@ public class PatientData {
     @JsonProperty("other_names")
     private String otherNames;
     
-    @JsonProperty("mr_number")
+    @SerializedName("mr_number")
     private String mrNumber;
     
-    @JsonProperty("managing_organization_id")
+    @SerializedName("managing_organization_id")
     private String managingOrganizationId;
     
     @JsonProperty("author_practitioner_id")
