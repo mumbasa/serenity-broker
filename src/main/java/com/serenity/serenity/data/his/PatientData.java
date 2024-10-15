@@ -1,9 +1,13 @@
 package com.serenity.serenity.data.his;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.SerializedName;
+import java.time.LocalDateTime;
 
+
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -12,72 +16,69 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table
+@Table(name = "patient_information")
 public class PatientData {
     @Id
     private long id;
-    @JsonProperty("uuid")
     private String uuid;
-    
-    @JsonProperty("external_id")
+    @Column(nullable = true)
+
     private String externalId;
     
-    @JsonProperty("external_system")
     private String externalSystem;
+    @Column(nullable = true)
+
+    private LocalDateTime createdAt;
     
-    @JsonProperty("created_at")
-    private String createdAt;
-    
-    @SerializedName("mobile")
     private String mobile;
-    
-    @JsonProperty("national_mobile_number")
+    @Column(nullable = true)
+
     private String nationalMobileNumber;
-    
-    @SerializedName("first_name")
+    @Column(name = "firstname")
     private String firstName;
-    
-    @SerializedName("last_name")
+    @Column(name = "lastname")
+
     private String lastName;
+    @Column(name = "fullname")
+    private String fullName;
     
-    @SerializedName("email")
+    @Column(nullable = true)
+    private String title;
+    @Column(nullable = true)
+
+    private String occupation;
+    @Column(nullable = true)
+    private String employer;
+    
+    @Column(name = "email")
     private String email;
-    
-    @SerializedName("birth_date")
+
+    @Column(name = "birthdate")
     private String birthDate;
+    @Column(nullable = true,name="maritalstatus")
+    private String maritalStatus;
     
-    @SerializedName("gender")
     private String gender;
-    
-    @JsonProperty("nationality")
+    @Column(nullable = true)
+
     private String nationality;
     
-    @JsonProperty("national_id")
-    private String nationalId;
     
-    @JsonProperty("national_id_type")
-    private String nationalIdType;
-    
-    @JsonProperty("other_names")
+    @Column(nullable = true)
+
     private String otherNames;
-    
-    @SerializedName("mr_number")
+    @Column(name = "mrnumber")
     private String mrNumber;
     
-    @SerializedName("managing_organization_id")
-    private String managingOrganizationId;
-    
-    @JsonProperty("author_practitioner_id")
-    private String authorPractitionerId;
-      
-    @JsonProperty("contribution_value")
-    private double contributionValue;
-    
-    @JsonProperty("contribution_currency")
-    private String contributionCurrency;
-    
-    @JsonProperty("contribution_type")
-    private String contributionType;
+    @Column(nullable = true)
+    private String bloodType;
+    @Column(nullable = true)
 
+    private String passportNumber;
+
+    @Column(nullable = true)
+    private String birthTime;
+
+    private String religiousAffiliation;
 
 }

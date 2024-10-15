@@ -173,7 +173,6 @@ public class InventoryTasks {
     public SerenityInventoryResponse serenitySearch(SerenityInventoryItem stock) {
         LOGGER.info("Searching for "+stock.getName());
         String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + stock.getLocation_name()+"&batch_number="+stock.getBatchNumber();
-        //String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name=" + stock.getLocation_name();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
@@ -182,6 +181,7 @@ public class InventoryTasks {
         ResponseEntity<SerenityInventoryResponse> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, SerenityInventoryResponse.class);
 //setting the stock with the data in serenity
             if (response.getBody().getTotal() > 0) {
+                System.out.println("found ---------------------------");
                 SerenityStock s = response.getBody().getData().get(0);
                 int qty=(int) (s.getInHandQuantity()+stock.getIn_hand_quantity());
                 stock.setUuid(response.getBody().getData().get(0).getUuid());
@@ -302,7 +302,10 @@ public class InventoryTasks {
 
 
     public String serenityCeate(List<SerenityInventoryItem> stock) {
-        LOGGER.info("Adding new entries to inventory for "+stock.toString());
+    Gson j = new Gson();
+   ;
+    
+        LOGGER.info("Adding new entries to inventory for "+ j.toJson(stock));
 
         String url = "https://stag.api.cloud.serenity.health/v2/inventory";
         HttpHeaders headers = new HttpHeaders();

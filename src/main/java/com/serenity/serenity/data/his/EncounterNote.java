@@ -35,6 +35,7 @@ public class EncounterNote {
    
     @Column(name="encounterid")
     @JsonProperty("encounter_id")
+    
     private String encounterId;
 
     @JsonProperty("encounter_date")

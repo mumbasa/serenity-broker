@@ -40,7 +40,7 @@ public class SerenityApplication {
 		SpringApplication.run(SerenityApplication.class, args);
 	}
 
-      @PostConstruct 
+      //@PostConstruct 
 	 void load() throws FileNotFoundException {
                 logger.info("working to add");
 

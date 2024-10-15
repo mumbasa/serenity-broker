@@ -1,6 +1,7 @@
 package com.serenity.serenity.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.serenity.serenity.data.his.EncounterNote;
 import com.serenity.serenity.data.his.Patient;
+import com.serenity.serenity.data.his.PatientData;
 import com.serenity.serenity.data.his.PatientMapping;
 import com.serenity.serenity.dto.PatientMappingDTO;
 import com.serenity.serenity.model.SerenityInventoryItem;
@@ -42,6 +44,18 @@ public class PatientController {
         return ResponseEntity.ok(patientService.list(query));
     }
 
+    @GetMapping("/exact/search")
+    public ResponseEntity<Optional<PatientData>>  searchDobANDMobile(@RequestParam("dob") String dob,@RequestParam("mobile") String mobile) {
+      
+        return ResponseEntity.ok(patientService.getByDOBMobile(mobile, dob));
+    }
+
+    @GetMapping("/exact/search/fields")
+    public ResponseEntity<List<PatientData>>  searchDobANDMobile(@RequestParam(required = false) String dob,@RequestParam(required = false) String mobile,@RequestParam(required = false) String gender,@RequestParam(required = false) String mrNumber) {
+      
+        return ResponseEntity.ok(patientService.findAll(dob, mobile, mrNumber, gender));
+    }
+
 
     @GetMapping("/mapping")
     public ResponseEntity<List<PatientMapping>>  patientMapping(@RequestParam("query") String query) {
@@ -55,11 +69,35 @@ public class PatientController {
         return ResponseEntity.ok(patientService.savePatientMapping(mapping));
     }
 
-    @PostMapping("/patient/encounter/notes")
-    public ResponseEntity<List<EncounterNote>>  getEncounterNotes(@RequestBody List<String> ids) {
+    @GetMapping("/patient/encounter/notes/type")
+    public ResponseEntity<List<EncounterNote>>  getEncounterNotes(@RequestParam String type,@RequestParam int page,@RequestParam int size) {
       
-        return ResponseEntity.ok(noteService.getNotes(ids));
+        return ResponseEntity.ok(noteService.getNotesByType(type, page, size));
     }
+
+
+    @GetMapping("/patient/encounter/mrnumbers")
+    public ResponseEntity<List<EncounterNote>>  getEncounterMrs(@RequestBody List<String> mrNumbers,@RequestParam int page,@RequestParam int size) {
+      
+        return ResponseEntity.ok(noteService.getNotesByIds(mrNumbers, page, size));
+    }
+
+
+    @GetMapping("/patient/encounter/mrnumber")
+    public ResponseEntity<List<EncounterNote>>  getEncounterNumber(@RequestParam String mrNumber,@RequestParam int page,@RequestParam int size) {
+      
+        return ResponseEntity.ok(noteService.getNotes(mrNumber, page, size));
+    }
+
+
+
+    @GetMapping("/patient/encounter/notes/practitioner")
+    public ResponseEntity<List<EncounterNote>>  getEncounterNotesPRactioner(@RequestParam String name,@RequestParam int page,@RequestParam int size) {
+      
+        return ResponseEntity.ok(noteService.getByPractitioner(name, page, size));
+    }
+
+
 
     @GetMapping("dispense")
     public ResponseEntity<SerenityInventoryResponse> mains(@RequestParam String name,@RequestParam String location) {
