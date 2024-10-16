@@ -72,12 +72,13 @@ public class EncounterNote {
     @JsonProperty("practitioner_name")
     private String practitionerName;
    
-    @Column(name="pratitionerrole_ype")
-    @JsonProperty("pratitioner_role_type")
+    @Column(name="practitionerroletype")
+    @JsonProperty("practitioner_role_type")
    private String practitionerRoleType;
     
    @Column(name="practitionerid")
    @JsonProperty("practitioner_id")
     private String practitionerId;
+    @Column(name="datasource")
     private String dataSource;
 }

@@ -69,35 +69,7 @@ public class PatientController {
         return ResponseEntity.ok(patientService.savePatientMapping(mapping));
     }
 
-    @GetMapping("/patient/encounter/notes/type")
-    public ResponseEntity<List<EncounterNote>>  getEncounterNotes(@RequestParam String type,@RequestParam int page,@RequestParam int size) {
-      
-        return ResponseEntity.ok(noteService.getNotesByType(type, page, size));
-    }
-
-
-    @GetMapping("/patient/encounter/mrnumbers")
-    public ResponseEntity<List<EncounterNote>>  getEncounterMrs(@RequestBody List<String> mrNumbers,@RequestParam int page,@RequestParam int size) {
-      
-        return ResponseEntity.ok(noteService.getNotesByIds(mrNumbers, page, size));
-    }
-
-
-    @GetMapping("/patient/encounter/mrnumber")
-    public ResponseEntity<List<EncounterNote>>  getEncounterNumber(@RequestParam String mrNumber,@RequestParam int page,@RequestParam int size) {
-      
-        return ResponseEntity.ok(noteService.getNotes(mrNumber, page, size));
-    }
-
-
-
-    @GetMapping("/patient/encounter/notes/practitioner")
-    public ResponseEntity<List<EncounterNote>>  getEncounterNotesPRactioner(@RequestParam String name,@RequestParam int page,@RequestParam int size) {
-      
-        return ResponseEntity.ok(noteService.getByPractitioner(name, page, size));
-    }
-
-
+  
 
     @GetMapping("dispense")
     public ResponseEntity<SerenityInventoryResponse> mains(@RequestParam String name,@RequestParam String location) {

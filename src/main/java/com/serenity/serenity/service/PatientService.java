@@ -69,7 +69,7 @@ return patientRepository.findByMobileAndBirthDate(mobile, dob);
         Specification<PatientData> filters = Specification.where(StringUtils.isBlank(dob) ? null : PatientSpecification.filterDateOfBirth(dob))
                                                        .and(StringUtils.isBlank(mobile) ? null : PatientSpecification.filterByMobile(mobile))
                                                        .and(StringUtils.isBlank(mrNumber) ? null : PatientSpecification.filterByMrNumber(mrNumber))
-                                                       .and(StringUtils.isBlank(gender) ? null : PatientSpecification.filterByMrNumber(gender));
+                                                       .and(StringUtils.isBlank(gender) ? null : PatientSpecification.filterByGender(gender));
 
                                                     
                                                        

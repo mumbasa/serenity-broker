@@ -5,13 +5,15 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.serenity.serenity.data.his.EncounterNote;
+import com.serenity.serenity.data.his.PatientData;
 
 @Repository
-public interface EncounterNoteRepository extends  JpaRepository<EncounterNote, Long>{
+public interface EncounterNoteRepository extends  JpaRepository<EncounterNote, Long>,JpaSpecificationExecutor<EncounterNote>{
 
     Page<EncounterNote> findByPatientMrNumberIn(List<String> ids,Pageable pageable);
     Page<EncounterNote> findByPatientMrNumberContains(String id,Pageable pageable);
