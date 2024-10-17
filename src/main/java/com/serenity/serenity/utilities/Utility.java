@@ -131,17 +131,19 @@ public class Utility {
 
     public static String getErpnextLocation(String locaton) {
         String serenityLocation = "[{\"locationId\": \"6b46da79-5613-4827-91ae-f46aaf65d4da\",\"locationName\": \"Accra Central (Octagon)\"},"
-                + "{\"locationId\": \"23f59485-8518-4f4e-9146-d061dfe58175\",\"locationName\": \"Airport Primary Care\"},"
-                + "{\"locationId\": \"b60c55f5-63dd-4ba2-9fe9-8192f57aaed2\",\"locationName\": \"Tema Primary Care\"},"
-                + "{\"locationId\": \"a79ae42b-03b7-4f5e-ac1a-cd42729c0b04\",\"locationName\": \"Takoradi Primary Care\"},"
-                + "{\"locationId\": \"29e22113-9d7b-46a6-a857-810ca3567ca7\",\"locationName\": \"Airport Main\"},"
-                + "{\"locationId\": \"25d3f170-2c76-413f-b4e0-7c09b4847b68\",\"locationName\": \"Kumasi\"}]";
+        + "{\"locationId\": \"23f59485-8518-4f4e-9146-d061dfe58175\",\"locationName\": \"Airport Primary Care\"},"
+        + "{\"locationId\": \"b60c55f5-63dd-4ba2-9fe9-8192f57aaed2\",\"locationName\": \"Tema Primary Care\"},"
+        + "{\"locationId\": \"a79ae42b-03b7-4f5e-ac1a-cd42729c0b04\",\"locationName\": \"Takoradi Primary Care\"},"
+        + "{\"locationId\": \"29e22113-9d7b-46a6-a857-810ca3567ca7\",\"locationName\": \"Airport Main\"},"
+        + "{\"locationId\": \"25d3f170-2c76-413f-b4e0-7c09b4847b68\",\"locationName\": \"Kumasi\"},"
+        + "{\"locationId\": \"2550dc16-3f64-4cee-b808-6c13b255d159\",\"locationName\": \"Ward - Airport Main\"}"+
+        "]";
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<SerenityLocation>>() {
         }.getType();
         ArrayList<SerenityLocation> serenitylocations = gson.fromJson(serenityLocation, listType);
 
-        String[] erpNextLocation = {"Pharmacy - Octagon - NMC", "Pharmacy - Airport Primary Care - NMC", "Pharmacy - Tema - NMC", "Pharmacy - Takoradi - NMC", "Main Pharmacy - Airport Main - NMC"};
+        String[] erpNextLocation = {"Pharmacy - Octagon - NMC", "Pharmacy - Airport Primary Care - NMC", "Pharmacy - Tema - NMC", "Pharmacy - Takoradi - NMC", "Main Pharmacy - Airport Main - NMC","Ward Pharmacy - Airport Main - NMC"};
         Map<String, String> locations = new HashMap<>();
 
         for (int i = 0; i < erpNextLocation.length; i++) {
