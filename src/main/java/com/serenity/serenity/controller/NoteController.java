@@ -17,14 +17,14 @@ public class NoteController {
    @Autowired
     NoteService noteService;
 
-    @GetMapping("/patient/encounter/")
+    @GetMapping("/patient/notes/")
     public ResponseEntity<List<EncounterNote>>  getEncounterNotes(@RequestParam(required = false) String type,@RequestParam(required = false) String mrNumber,@RequestParam(required = false) String practitionerId,@RequestParam(required = false) String startDate,@RequestParam(required = false) String endDate,@RequestParam(required = false) String keyword,@RequestParam(required = false) String encounterType) {
       
         return ResponseEntity.ok(noteService.findAll(mrNumber,practitionerId,type,startDate,endDate,keyword,encounterType));
     }
 
 
-    @GetMapping("/patient/encounter/mrnumbers")
+    @GetMapping("/patient/notes/mrnumbers")
     public ResponseEntity<List<EncounterNote>>  getEncounterMrs(@RequestParam List<String> mrNumbers,@RequestParam int page,@RequestParam int size) {
       
         return ResponseEntity.ok(noteService.getNotesByIds(mrNumbers, page, size));
