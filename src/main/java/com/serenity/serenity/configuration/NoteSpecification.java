@@ -30,7 +30,7 @@ public class NoteSpecification {
     }
 
     public static Specification<EncounterNote> filterByKeyword(String keyword) {
-        return (root, query, builder)-> builder.like(root.get("note"), keyword);
+        return (root, query, builder)-> builder.like(root.get("note"), "%" + keyword + "%");
     }
 
     public static Specification<EncounterNote> filterByEncounterType(String keyword) {
