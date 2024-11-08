@@ -27,4 +27,5 @@ public class SerenityInventoryItem {
     @SerializedName("batch_number")
     private String batchNumber;
     private String sourceId;
+    private String external_system;
 }

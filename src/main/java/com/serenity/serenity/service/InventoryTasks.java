@@ -50,6 +50,7 @@ public class InventoryTasks {
         List<SerenityInventoryItem> oldEtries = new ArrayList<>();
         // looping to separate the new from the old stock
         for (SerenityInventoryItem stock : stocks) {
+            stock.setExternal_system("erpnext");
             SerenityInventoryResponse res = serenitySearch(stock);
             if (res.getTotal() > 0) {
                 LOGGER.info("found item to update quantity " + stock.getIn_hand_quantity() + "=>"
@@ -90,6 +91,7 @@ public class InventoryTasks {
         LOGGER.info("Creating map");
         // adding same items irrespective of batch numbers
         stocks.stream().forEach(e -> {
+            e.setExternal_system("erpnext");
 
             if (itemMap.containsKey(e.getName())) {
                 SerenityInventoryItem item = itemMap.get(e.getCode());
@@ -140,6 +142,8 @@ public class InventoryTasks {
         List<SerenityInventoryItem> oldEtries = new ArrayList<>();
         // looping to separate the new from the old stock
         for (SerenityInventoryItem stock : stocks) {
+            stock.setExternal_system("erpnext");
+
             SerenityInventoryResponse res = stockCount(stock);
             if (res.getTotal() > 0) {
                 oldEtries.add(stock);

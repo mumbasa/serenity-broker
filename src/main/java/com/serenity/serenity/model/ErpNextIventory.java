@@ -36,8 +36,11 @@ public class ErpNextIventory {
         this.setDelivery_date(Calendar.getInstance().toString());
         this.setDocstatus(1);
         this.setSet_warehouse(Utility.getErpnextLocation(payload.getLocation_name()));
+        //preventing dispensing items not in erpnext
         payload.items.forEach(e ->{ 
+            if(e.getExternal_system().isBlank()|| e.getExternal_system().equalsIgnoreCase("erpnext")){
             items.add(new ErpNextItem(e));
+            }
 
         });
     
