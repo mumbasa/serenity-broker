@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,11 +17,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.serenity.serenity.data.his.SerenityInventoryStore;
 import com.serenity.serenity.model.ErpNextIventory;
 import com.serenity.serenity.model.SerenityBroker;
 import com.serenity.serenity.model.SerenityInventoryItem;
 import com.serenity.serenity.model.SerenityInventoryResponse;
 import com.serenity.serenity.model.SerenityStock;
+import com.serenity.serenity.repository.InventoryRepository;
 
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
@@ -31,6 +34,9 @@ public class InventoryTasks {
 
     @Value("${serenity.token}")
     private String serenityToken;
+
+    @Autowired
+    private InventoryRepository inventoryRepository;
 
     public String serenityInventoryUpdate(ErpNextIventory inventory) {
 
@@ -124,14 +130,27 @@ public class InventoryTasks {
         if (!newEntries.isEmpty()) {
             try {
                 serenityCeate(newEntries);
-            } catch (Exception e) {
+            } catch (Exception error) {
                 LOGGER.error("error occured");
-                e.printStackTrace();
+                List<SerenityInventoryStore> store = new ArrayList<>();
+                newEntries.stream().forEach(e -> {
+                    store.add(new SerenityInventoryStore(e,"create",error));
+                });
+                inventoryRepository.saveAll(store);
+                error.printStackTrace();
             }
         }
         if (!oldEtries.isEmpty()) {
             for (SerenityInventoryItem s : oldEtries) {
+                try{
                 serenityUpdate(s);
+            }catch(Exception error){
+                error.printStackTrace();
+                inventoryRepository.save(new SerenityInventoryStore(s,"update",error));
+
+
+
+            }
             }
         }
     }
