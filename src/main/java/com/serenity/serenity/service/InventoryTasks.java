@@ -389,7 +389,7 @@ public class InventoryTasks {
         String json = gson.toJson(inventory);
         System.err.println(json);
 
-        String endpoint = "http://52.212.103.219:8001/api/resource/Delivery Note";
+        String endpoint = "http://staging-erp.nyaho.tech:8001/api/resource/Delivery Note";
         HttpHeaders headers = new HttpHeaders();
 
         headers.set("Content-Type", "application/json");
