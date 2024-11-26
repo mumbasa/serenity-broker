@@ -30,6 +30,7 @@ public class InventoryListener {
         switch (brokerMessage.getEventType()) {
             
             case "inventory/dispense" -> {
+                brokerMessage.payload.items.stream().forEach(e-> {e.setExternal_system("his");});
                 System.err.println(inventoryTasks.dispense(brokerMessage));
             }
             default ->
