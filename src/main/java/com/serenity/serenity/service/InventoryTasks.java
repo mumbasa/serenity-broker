@@ -389,11 +389,11 @@ public class InventoryTasks {
         String json = gson.toJson(inventory);
         System.err.println(json);
 
-        String endpoint = "http://staging-erp.nyaho.tech:8001/api/resource/Delivery Note";
+        String endpoint = "https://staging-erp.nyaho.tech/api/resource/Delivery Note";
         HttpHeaders headers = new HttpHeaders();
 
         headers.set("Content-Type", "application/json");
-        headers.set("Authorization", "token b565e3d6c1f460d:59426b2f5a3047f"); // Add token if needed
+        headers.set("Authorization", "token 984904f7fbaa302:3e42c2fcf853d71"); // Add token if needed
 
         HttpEntity<ErpNextIventory> httpEntity = new HttpEntity<>(inventory, headers);
 
@@ -401,7 +401,7 @@ public class InventoryTasks {
         try {
             ResponseEntity<String> response = restTemplate.exchange(endpoint, HttpMethod.POST, httpEntity,
                     String.class);
-
+            System.err.println(response.getBody());
             return response.getBody();
 
         } catch (Exception e) {

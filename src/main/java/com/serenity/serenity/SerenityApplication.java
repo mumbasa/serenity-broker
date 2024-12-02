@@ -29,8 +29,8 @@ public class SerenityApplication {
    @Autowired
     private VectorStore vectorStore;
 
-    @Autowired
-    PatientService patientService;
+   // @Autowired
+    //PatientService patientService;
 
 	@Value("${patients.data}")
 	String patientsData;

@@ -1,5 +1,7 @@
 package com.serenity.serenity.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -33,14 +35,18 @@ public class ErpNextIventory {
         this.setSelling_price_list("Standard Selling");
         this.setPrice_list_currency("GHS");
         this.setPlc_conversion_rate(1);
-        this.setDelivery_date(Calendar.getInstance().toString());
+        this.setDelivery_date(LocalDate.now().toString());
         this.setDocstatus(1);
         this.setSet_warehouse(Utility.getErpnextLocation(payload.getLocation_name()));
         //preventing dispensing items not in erpnext
         payload.items.forEach(e ->{ 
-            if(e.getExternal_system().isBlank()|| e.getExternal_system().equalsIgnoreCase("erpnext")){
+            try{
+            if(!e.getExternal_system().isBlank()& e.getExternal_system().equalsIgnoreCase("erpnext")){
             items.add(new ErpNextItem(e));
             }
+        }catch(Exception es){
+
+        }
 
         });
     

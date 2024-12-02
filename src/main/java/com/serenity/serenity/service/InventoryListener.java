@@ -39,7 +39,7 @@ public class InventoryListener {
 
     }
 
-    @RabbitListener(queues = "serenity", concurrency = "4", containerFactory = "createRabbitListenerFactory")
+    @RabbitListener(queues = "serenity", concurrency = "1", containerFactory = "createRabbitListenerFactory")
     public void getBillInfo(String message) {
         PayloadHeader headerMessage = new Gson().fromJson(message, PayloadHeader.class);
 
