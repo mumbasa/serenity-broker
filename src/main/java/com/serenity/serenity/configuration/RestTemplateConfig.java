@@ -13,9 +13,9 @@ public class RestTemplateConfig {
     @Bean
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
-        DefaultUriBuilderFactory defaultUriBuilderFactory = new DefaultUriBuilderFactory();
-        defaultUriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
-        restTemplate.setUriTemplateHandler(defaultUriBuilderFactory);
+     //   DefaultUriBuilderFactory defaultUriBuilderFactory = new DefaultUriBuilderFactory();
+      //  defaultUriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.TEMPLATE_AND_VALUES);
+        // /`restTemplate.setUriTemplateHandler(defaultUriBuilderFactory);
         return restTemplate;
     }
 }

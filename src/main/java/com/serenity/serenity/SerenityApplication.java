@@ -62,16 +62,16 @@ try{
 }
             }
             
-      
-  } */
+        } */
 @PostConstruct
   public void loaders(){
 
-   try {
-      System.err.println(tasks.stockCounter("Accurate-Urine-(Drug-Abuse-Test)-NEW"));
-   } catch (UnsupportedEncodingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-   }
+   System.err.println(tasks.stockCounter2("PAIN-KIT-NEW","Airport Main"));
+      System.err.println(tasks.stockCounter2("PAIN-KIT-NEW","Tema Primary Care"));
+      
+   
+   System.err.println(tasks.stockCounter2("PROMAN-NEW","Airport Main"));
+      System.err.println(tasks.stockCounter2("PROMAN-NEW","Tema Primary Care"));
+
   }
 }
