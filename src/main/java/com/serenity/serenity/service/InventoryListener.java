@@ -1,11 +1,14 @@
 package com.serenity.serenity.service;
 
 
+import java.io.UnsupportedEncodingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 
 import com.google.gson.Gson;
 import com.serenity.serenity.erpmodel.ErpInventoryMessage;
@@ -40,7 +43,7 @@ public class InventoryListener {
     }
 
     @RabbitListener(queues = "serenity", concurrency = "1", containerFactory = "createRabbitListenerFactory")
-    public void getBillInfo(String message) {
+    public void getBillInfo(String message) throws RestClientException, UnsupportedEncodingException {
         PayloadHeader headerMessage = new Gson().fromJson(message, PayloadHeader.class);
 
         switch (headerMessage.getEventType()) {

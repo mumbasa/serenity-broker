@@ -1,5 +1,6 @@
 package com.serenity.serenity.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
 
 import com.serenity.serenity.data.his.EncounterNote;
 import com.serenity.serenity.data.his.Patient;
@@ -37,13 +39,13 @@ public class PatientController {
 
     @Autowired
     NoteService noteService;
-
+/* 
     @GetMapping("/search")
     public ResponseEntity<List<Patient>>  list(@RequestParam("query") String query) {
       
         return ResponseEntity.ok(patientService.list(query));
     }
-
+ */
     @GetMapping("/exact/search")
     public ResponseEntity<Optional<PatientData>>  searchDobANDMobile(@RequestParam("dob") String dob,@RequestParam("mobile") String mobile) {
       
@@ -72,7 +74,7 @@ public class PatientController {
   
 
     @GetMapping("dispense")
-    public ResponseEntity<SerenityInventoryResponse> mains(@RequestParam String name,@RequestParam String location) {
+    public ResponseEntity<SerenityInventoryResponse> mains(@RequestParam String name,@RequestParam String location) throws RestClientException, UnsupportedEncodingException {
         SerenityInventoryItem stock = new SerenityInventoryItem();
         stock.setName(name);
         stock.setLocation_name(location);

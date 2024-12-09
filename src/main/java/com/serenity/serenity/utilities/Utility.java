@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.ai.document.Document;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -73,7 +72,7 @@ public class Utility {
 
 
 
-    public static List<Patient> getSerenityInventoryFromErp(List<Document> documents) {
+    /* public static List<Patient> getSerenityInventoryFromErp(List<Document> documents) {
         List<Patient> items = new ArrayList<>();
 
         for (Document inv : documents) {
@@ -99,7 +98,7 @@ public class Utility {
         return items;
 
     }
-
+ */
 
 
     public static SerenityLocation getLocationDetails(String locaton) {

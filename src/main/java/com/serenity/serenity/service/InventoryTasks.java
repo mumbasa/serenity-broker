@@ -1,5 +1,9 @@
 package com.serenity.serenity.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
@@ -38,6 +43,9 @@ public class InventoryTasks {
     @Autowired
     private InventoryRepository inventoryRepository;
 
+    @Autowired
+    RestTemplate restTemplate;
+
     public String serenityInventoryUpdate(ErpNextIventory inventory) {
 
         String url = "https://stag.api.cloud.serenity.health/v2/inventory/{item_id}";
@@ -50,7 +58,7 @@ public class InventoryTasks {
         return "uo";
     }
 
-    public void serentityInventoryUpdate(List<SerenityInventoryItem> stocks, boolean k) {
+    public void serentityInventoryUpdate(List<SerenityInventoryItem> stocks, boolean k) throws RestClientException, UnsupportedEncodingException {
         System.err.println("------------------------ start");
         List<SerenityInventoryItem> newEntries = new ArrayList<>();
         List<SerenityInventoryItem> oldEtries = new ArrayList<>();
@@ -91,10 +99,12 @@ public class InventoryTasks {
         }
     }
 
-    public void serentityInventoryAdjust2(List<SerenityInventoryItem> stocks, boolean k) {
+    public void serentityInventoryAdjust2(List<SerenityInventoryItem> stocks, boolean k) throws UnsupportedEncodingException {
 
         Map<String, SerenityInventoryItem> itemMap = new HashMap<>();
+
         LOGGER.info("Creating map");
+  
         // adding same items irrespective of batch numbers
         stocks.stream().forEach(e -> {
             e.setExternal_system("erpnext");
@@ -155,7 +165,7 @@ public class InventoryTasks {
         }
     }
 
-    public void serentityInventoryAdjust(List<SerenityInventoryItem> stocks, boolean k) {
+    public void serentityInventoryAdjust(List<SerenityInventoryItem> stocks, boolean k) throws UnsupportedEncodingException {
         System.err.println("------------------------ start");
         List<SerenityInventoryItem> newEntries = new ArrayList<>();
         List<SerenityInventoryItem> oldEtries = new ArrayList<>();
@@ -192,16 +202,17 @@ public class InventoryTasks {
     }
 
     @SuppressWarnings("null")
-    public SerenityInventoryResponse serenitySearch(SerenityInventoryItem stock) {
-        LOGGER.info("Searching for " + stock.getName());
-        String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name="
-                + stock.getLocation_name();// "&batch_number="+stock.getBatchNumber()+"&batch_number="+stock.getBatchNumber();
+    public SerenityInventoryResponse serenitySearch(SerenityInventoryItem stock) throws UnsupportedEncodingException  {
+        LOGGER.info("Searching for " + stock.getCode());
+        
+        String params = URLEncoder.encode(stock.getCode() + "&location_name="+ stock.getLocation_name(), "UTF-8");
+        String url = "https://stag.api.cloud.serenity.health/v2/inventory?code=" + params;
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.set("x-api-key", "efomrddi");
         // headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-        RestTemplate restTemplate = new RestTemplate();
+        
         ResponseEntity<SerenityInventoryResponse> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
                 SerenityInventoryResponse.class);
         // setting the stock with the data in serenity
@@ -219,7 +230,7 @@ public class InventoryTasks {
         return response.getBody();
     }
 
-    public void serentityTransfer(List<SerenityInventoryItem> stocks) {
+    public void serentityTransfer(List<SerenityInventoryItem> stocks) throws UnsupportedEncodingException {
         for (SerenityInventoryItem item : stocks) {
 
             serenitySearchF(item);
@@ -228,22 +239,23 @@ public class InventoryTasks {
     }
 
     @SuppressWarnings("null")
-    public void serenitySearchF(SerenityInventoryItem stock) {
+    public void serenitySearchF(SerenityInventoryItem stock) throws UnsupportedEncodingException {
         String[] locations = { stock.getLocation_name(), stock.getSourceName() };
         List<SerenityInventoryItem> items = new ArrayList<>();
-        LOGGER.info("Searching for " + stock.getName());
+        LOGGER.info("Searching for " + stock.getCode());
         int count = 0; // this is to create a counter to enable the substraction from the source stock
         for (String location : locations) {
             System.err.println(location + "------------------");
-            String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName()
-                    + "&location_name=" + location;
+            
+            String params = URLEncoder.encode(stock.getCode() + "&location_name="+ stock.getLocation_name(), "UTF-8");
+            String url = "https://stag.api.cloud.serenity.health/v2/inventory?code=" + params;
             // "&batch_number="+stock.getBatchNumber();
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
             headers.add("x-api-key", "efomrddi");
             // headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
             HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-            RestTemplate restTemplate = new RestTemplate();
+
             ResponseEntity<SerenityInventoryResponse> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
                     SerenityInventoryResponse.class);
             LOGGER.info(response.getBody().toString());
@@ -261,14 +273,14 @@ public class InventoryTasks {
                     item.setLocation_id(stock.getSourceId());
                     item.setLocation_name(stock.getSourceName());
                     item.setIn_hand_quantity((int) (s.getInHandQuantity() - stock.getIn_hand_quantity()));
-                    item.setName(stock.getName());
+                    item.setName(stock.getCode());
                     item.setCode(stock.getCode());
                     LOGGER.info(stock.getIn_hand_quantity() + "\tSubstacting stock " + s.getInHandQuantity());
                 } else {
                     item.setLocation_id(stock.getLocation_id());
                     item.setLocation_name(stock.getLocation_name());
                     item.setIn_hand_quantity((int) (s.getInHandQuantity() + stock.getIn_hand_quantity()));
-                    item.setName(stock.getName());
+                    item.setName(stock.getCode());
                     item.setCode(stock.getCode());
                     LOGGER.info(stock.getIn_hand_quantity() + "\tTransfering stock" + s.getInHandQuantity());
 
@@ -296,20 +308,19 @@ public class InventoryTasks {
     }
 
     @SuppressWarnings("null")
-    public SerenityInventoryResponse stockCount(SerenityInventoryItem stock) {
-        LOGGER.info("Searching for " + stock.getName());
-        // String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" +
-        // stock.getName() + "&location_name=" +
+    public SerenityInventoryResponse stockCount(SerenityInventoryItem stock) throws UnsupportedEncodingException {
+        LOGGER.info("Searching for " + stock.getCode());
+        // String url = "https://stag.api.cloud.serenity.health/v2/inventory?code=" +
+        // stock.getCode() + "&location_name=" +
         // stock.getLocation_name()+"&batch_number="+stock.getBatchNumber();
-
-        String url = "https://stag.api.cloud.serenity.health/v2/inventory?name=" + stock.getName() + "&location_name="
-                + stock.getLocation_name();
+        String params = URLEncoder.encode(stock.getCode() + "&location_name="+ stock.getLocation_name(), "UTF-8");
+        String url = "https://stag.api.cloud.serenity.health/v2/inventory?code=" + params;
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.add("x-api-key", "efomrddi");
         // headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-        RestTemplate restTemplate = new RestTemplate();
+        
         ResponseEntity<SerenityInventoryResponse> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
                 SerenityInventoryResponse.class);
         // setting the stock with the data in serenity
@@ -332,7 +343,7 @@ public class InventoryTasks {
         headers.add("x-api-key", "efomrddi");
         // headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
         HttpEntity<List<SerenityInventoryItem>> httpEntity = new HttpEntity<>(stock, headers);
-        RestTemplate restTemplate = new RestTemplate();
+
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
         return response.getBody();
     }
@@ -345,13 +356,13 @@ public class InventoryTasks {
         headers.set("Content-Type", "application/json");
         headers.add("x-api-key", "efomrddi"); // Add token if needed
         HttpEntity<SerenityInventoryItem> httpEntity = new HttpEntity<>(stock, headers);
-        RestTemplate restTemplate = new RestTemplate();
+
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
         return response.getBody();
     }
 
     public String serenityUpdate(SerenityInventoryItem stock) {
-        LOGGER.info("Updating inventory for " + stock.getName() + "\t " + stock.getIn_hand_quantity());
+        LOGGER.info("Updating inventory for " + stock.getCode() + "\t " + stock.getIn_hand_quantity());
 
         HttpResponse<String> response = Unirest
                 .patch("https://stag.api.cloud.serenity.health/v2/inventory/" + stock.getUuid())
@@ -365,8 +376,8 @@ public class InventoryTasks {
 
     }
 
-    public String serenityUpdate(SerenityInventoryItem stock, boolean tea) {
-        LOGGER.info("Updating inventory for " + stock.getName() + "\t " + stock.getIn_hand_quantity());
+    public String serenityUpdate(SerenityInventoryItem stock, boolean tea) throws RestClientException, UnsupportedEncodingException {
+        LOGGER.info("Updating inventory for " + stock.getCode() + "\t " + stock.getIn_hand_quantity());
 
         String url = "https://stag.api.cloud.serenity.health/v2/inventory";
         HttpHeaders headers = new HttpHeaders();
@@ -410,6 +421,29 @@ public class InventoryTasks {
             return "failed";
         }
 
+
+
+        
+
+    }
+
+    public String stockCounter(String code) throws UnsupportedEncodingException {
+   
+        String params = URLEncoder.encode(code+ "&location_name=Airport Main", "UTF-8");
+        String url = "https://stag.api.cloud.serenity.health/v2/inventory?code=" + params;
+              
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        headers.add("x-api-key", "efomrddi");
+        // headers.set("Authorization", "Bearer "+serenityToken); // Add token if needed
+        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
+                String.class);
+        // setting the stock with the data in serenity
+     
+
+        return response.getBody();
     }
 
 }
