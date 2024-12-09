@@ -43,7 +43,7 @@ public class InventoryListener {
     }
 
     @RabbitListener(queues = "serenity", concurrency = "1", containerFactory = "createRabbitListenerFactory")
-    public void getBillInfo(String message) throws RestClientException, UnsupportedEncodingException {
+    public void getBillInfo(String message) throws  UnsupportedEncodingException {
         PayloadHeader headerMessage = new Gson().fromJson(message, PayloadHeader.class);
 
         switch (headerMessage.getEventType()) {

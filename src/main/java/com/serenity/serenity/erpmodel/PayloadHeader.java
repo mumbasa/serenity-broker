@@ -10,6 +10,5 @@ import lombok.Setter;
 public class PayloadHeader {
     @SerializedName("event_type")
     private String eventType;
-    private String target;
-    private String headers;
+    
 }

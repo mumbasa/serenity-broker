@@ -66,12 +66,12 @@ try{
 @PostConstruct
   public void loaders(){
 
-   System.err.println(tasks.stockCounter2("PAIN-KIT-NEW","Airport Main"));
-      System.err.println(tasks.stockCounter2("PAIN-KIT-NEW","Tema Primary Care"));
+   System.err.println(tasks.stockCounter2("YELLOW-TRASH-BAG-40L-NEW","Accra Central (Octagon)"));
+      //System.err.println(tasks.stockCounter2("PAIN-KIT-NEW","Tema Primary Care"));
       
    
-   System.err.println(tasks.stockCounter2("PROMAN-NEW","Airport Main"));
-      System.err.println(tasks.stockCounter2("PROMAN-NEW","Tema Primary Care"));
+  // System.err.println(tasks.stockCounter2("PROMAN-NEW","Airport Main"));
+   //   System.err.println(tasks.stockCounter2("PROMAN-NEW","Tema Primary Care"));
 
   }
 }
