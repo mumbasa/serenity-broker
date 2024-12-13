@@ -375,7 +375,7 @@ public class InventoryTasks {
         HttpHeaders headers = new HttpHeaders();
 
         headers.set("Content-Type", "application/json");
-        headers.set("Authorization", "token 984904f7fbaa302:3e42c2fcf853d71"); // Add token if needed
+        headers.set("Authorization", "token b85940219b20a4d:0cc7ecdba6659cd"); // Add token if needed
 
         HttpEntity<ErpNextIventory> httpEntity = new HttpEntity<>(inventory, headers);
 
