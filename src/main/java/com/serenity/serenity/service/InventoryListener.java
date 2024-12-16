@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.serenity.serenity.erpmodel.ErpInventoryMessage;
 import com.serenity.serenity.erpmodel.InventoryUpdate;
 import com.serenity.serenity.erpmodel.PayloadHeader;
@@ -44,6 +45,7 @@ public class InventoryListener {
 
     @RabbitListener(queues = "serenity", concurrency = "1", containerFactory = "createRabbitListenerFactory")
     public void getBillInfo(String message) throws  UnsupportedEncodingException {
+       try{
         PayloadHeader headerMessage = new Gson().fromJson(message, PayloadHeader.class);
 
         switch (headerMessage.getEventType()) {
@@ -79,6 +81,9 @@ public class InventoryListener {
             default ->
             LOGGER.info("default");
         }
+    }catch(JsonSyntaxException e){
+        System.err.println("wrong format =>"+message);
+    }
 
     }
     
