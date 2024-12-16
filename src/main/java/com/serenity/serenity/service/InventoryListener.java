@@ -81,7 +81,7 @@ public class InventoryListener {
             default ->
             LOGGER.info("default");
         }
-    }catch(JsonSyntaxException e){
+    }catch(Exception e){
         System.err.println("wrong format =>"+message);
     }
 
