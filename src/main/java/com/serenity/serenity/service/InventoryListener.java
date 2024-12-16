@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,7 +44,7 @@ public class InventoryListener {
 
     }
 
-    @RabbitListener(queues = "serenity", concurrency = "1", containerFactory = "createRabbitListenerFactory")
+    @RabbitListener(queues = "serenity", concurrency = "1", containerFactory = "createRabbitListenerFactory",ackMode ="auto")
     public void getBillInfo(String message) throws  UnsupportedEncodingException {
        try{
         PayloadHeader headerMessage = new Gson().fromJson(message, PayloadHeader.class);
@@ -82,6 +83,7 @@ public class InventoryListener {
             LOGGER.info("default");
         }
     }catch(Exception e){
+
         System.err.println("wrong format =>"+message);
     }
 
