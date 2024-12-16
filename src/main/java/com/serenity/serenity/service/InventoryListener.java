@@ -13,6 +13,7 @@ import org.springframework.web.client.RestClientException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.rabbitmq.client.AMQP.Basic.Ack;
 import com.serenity.serenity.erpmodel.ErpInventoryMessage;
 import com.serenity.serenity.erpmodel.InventoryUpdate;
 import com.serenity.serenity.erpmodel.PayloadHeader;
@@ -29,6 +30,8 @@ public class InventoryListener {
 
     @RabbitListener(queues = "erpnext", concurrency = "4", containerFactory = "createRabbitListenerFactory")
     public void receiveMessage(String message) {
+
+        try{
      SerenityBroker brokerMessage = new Gson().fromJson(message, SerenityBroker.class);
         LOGGER.info(message);
        
@@ -41,11 +44,15 @@ public class InventoryListener {
             default ->
                 System.err.println("default");
         }
+    }catch(Exception e){
+        System.err.println("wrong format =>"+message);
+    }
 
     }
 
-    @RabbitListener(queues = "serenity", concurrency = "1", containerFactory = "createRabbitListenerFactory",ackMode ="auto")
+    @RabbitListener(queues = "serenity", concurrency = "1", containerFactory = "createRabbitListenerFactory")
     public void getBillInfo(String message) throws  UnsupportedEncodingException {
+        LOGGER.info(message);
        try{
         PayloadHeader headerMessage = new Gson().fromJson(message, PayloadHeader.class);
 
@@ -83,8 +90,8 @@ public class InventoryListener {
             LOGGER.info("default");
         }
     }catch(Exception e){
-
-        System.err.println("wrong format =>"+message);
+e.printStackTrace();
+       LOGGER.info("wrong format =>"+message);
     }
 
     }
