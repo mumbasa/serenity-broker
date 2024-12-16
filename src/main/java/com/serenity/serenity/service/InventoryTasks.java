@@ -430,8 +430,8 @@ public class InventoryTasks {
             item.setLocation_id(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("location_id"));
             item.setLocation_name(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("location_name"));
 
-            //response.setTotal(jsonResponse.getBody().getObject().getInt("total"));
-            //response.setSize(jsonResponse.getBody().getObject().getInt("size"));
+            response.setTotal(jsonResponse.getBody().getObject().getInt("total"));
+            response.setSize(jsonResponse.getBody().getObject().getInt("size"));
         }
 
         return response;
