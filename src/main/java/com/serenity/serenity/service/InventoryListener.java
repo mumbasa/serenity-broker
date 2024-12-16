@@ -91,7 +91,7 @@ public class InventoryListener {
         }
     }catch(Exception e){
 e.printStackTrace();
-       LOGGER.info("wrong format =>"+message);
+      // LOGGER.info("wrong format =>"+message);
     }
 
     }

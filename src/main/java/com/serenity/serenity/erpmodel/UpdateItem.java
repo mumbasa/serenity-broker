@@ -24,6 +24,7 @@ public class UpdateItem {
    
         @SerializedName("qty")
         private double quantity;
+        
         @SerializedName("selling_rate")
         private double sellingRate;
 
