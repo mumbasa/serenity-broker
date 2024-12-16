@@ -166,7 +166,7 @@ public class InventoryTasks {
         for (SerenityInventoryItem stock : stocks) {
             stock.setExternal_system("erpnext");
 
-            SerenityInventoryResponse res = stockCounter2(stock);
+            SerenityInventoryResponse res = stockAdjust(stock);
             if (res.getTotal() > 0) {
                 oldEtries.add(stock);
                 LOGGER.info("found item to update");
@@ -408,6 +408,35 @@ public class InventoryTasks {
 
         return jsonResponse.getBody().getObject().getInt("total") + "";
     }
+
+    public SerenityInventoryResponse stockAdjust(SerenityInventoryItem item) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("accept", "application/json");
+        headers.put("x-api-key", "efomrddi");
+
+        HttpResponse<JsonNode> jsonResponse = Unirest.get("https://stag.api.cloud.serenity.health/v2/inventory")
+                .headers(headers)
+                .queryString("code", item.getCode())
+                .queryString("location_name", item.getLocation_name())
+                .asJson();
+        System.err.println(jsonResponse.getBody().toPrettyString());
+        SerenityInventoryResponse response = new SerenityInventoryResponse();
+
+        if (jsonResponse.getBody().getObject().getInt("total") > 0) {
+          
+           // int qty = (int) (jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getInt("in_hand_quantity"));
+            //item.setIn_hand_quantity(qty);
+            item.setUuid(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("uuid"));
+            item.setLocation_id(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("location_id"));
+            item.setLocation_name(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("location_name"));
+
+            //response.setTotal(jsonResponse.getBody().getObject().getInt("total"));
+            //response.setSize(jsonResponse.getBody().getObject().getInt("size"));
+        }
+
+        return response;
+    }
+
 
     public SerenityInventoryResponse stockCounter2(SerenityInventoryItem item) {
         Map<String, String> headers = new HashMap<>();
