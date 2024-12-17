@@ -443,7 +443,7 @@ public class InventoryTasks {
         headers.put("accept", "application/json");
         headers.put("x-api-key", "efomrddi");
 
-        HttpResponse<JsonNode> jsonResponse = Unirest.get("https://stag.api.cloud.serenity.health/v2/inventory")
+        HttpResponse<JsonNode> jsonResponse = Unirest.get("http://stag.api.cloud.serenity.health/v2/inventory")
                 .headers(headers)
                 .queryString("code", item.getCode())
                 .queryString("location_name", item.getLocation_name())
