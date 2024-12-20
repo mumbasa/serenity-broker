@@ -66,7 +66,7 @@ try{
 @PostConstruct
   public void loaders(){
 
-   System.err.println(tasks.stockCounter2("YELLOW-TRASH-BAG-40L-NEW","Accra Central (Octagon)"));
+   System.err.println(tasks.stockCounter2("PRESCRIPTION-PADS-NEW","Tema Primary Care"));
       //System.err.println(tasks.stockCounter2("PAIN-KIT-NEW","Tema Primary Care"));
       
    
