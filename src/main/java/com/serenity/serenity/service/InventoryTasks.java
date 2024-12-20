@@ -297,7 +297,7 @@ public class InventoryTasks {
     public String serenityCeate(List<SerenityInventoryItem> stock) {
         Gson j = new Gson();
         LOGGER.info("Adding new entries to inventory for " + j.toJson(stock));
-        String url = "https://stag.api.cloud.serenity.health/v2/inventory";
+        String url = "http://stag.api.cloud.serenity.health/v2/inventory";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.add("x-api-key", "efomrddi");
