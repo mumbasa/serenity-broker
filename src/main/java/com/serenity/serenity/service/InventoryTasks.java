@@ -61,10 +61,7 @@ public class InventoryTasks {
             stock.setExternal_system("erpnext");
             SerenityInventoryResponse res = stockCounter2(stock);
             if (res.getTotal() > 0) {
-                LOGGER.info("found item to update quantity " + stock.getIn_hand_quantity() + "=>"
-                        + (int) res.getData().get(0).getInHandQuantity());
-
-               // stock.setLocation_id(res.getData().get(0).getLocationId());
+                  // stock.setLocation_id(res.getData().get(0).getLocationId());
                 //stock.setLocation_name(res.getData().get(0).getLocationName());
                 oldEtries.add(stock);
 
@@ -196,7 +193,7 @@ public class InventoryTasks {
         LOGGER.info("Searching for " + stock.getCode());
 
         String params = URLEncoder.encode(stock.getCode() + "&location_name=" + stock.getLocation_name(), "UTF-8");
-        String url = "https://stag.api.cloud.serenity.health/v2/inventory?code=" + params;
+        String url = "http://stag.api.cloud.serenity.health/v2/inventory?code=" + params;
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.set("x-api-key", "efomrddi");
@@ -238,7 +235,7 @@ public class InventoryTasks {
             System.err.println(location + "------------------");
 
             String params = URLEncoder.encode(stock.getCode() + "&location_name=" + stock.getLocation_name(), "UTF-8");
-            String url = "https://stag.api.cloud.serenity.health/v2/inventory?code=" + params;
+            String url = "http://stag.api.cloud.serenity.health/v2/inventory?code=" + params;
             // "&batch_number="+stock.getBatchNumber();
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
@@ -300,7 +297,7 @@ public class InventoryTasks {
     public String serenityCeate(List<SerenityInventoryItem> stock) {
         Gson j = new Gson();
         LOGGER.info("Adding new entries to inventory for " + j.toJson(stock));
-        String url = "https://stag.api.cloud.serenity.health/v2/inventory";
+        String url = "http://stag.api.cloud.serenity.health/v2/inventory";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.add("x-api-key", "efomrddi");
@@ -321,7 +318,7 @@ public class InventoryTasks {
     public String serenityCeate(SerenityInventoryItem stock) {
         LOGGER.info("Adding new entries to inventory for " + stock.toString());
 
-        String url = "https://stag.api.cloud.serenity.health/v2/inventory";
+        String url = "http://stag.api.cloud.serenity.health/v2/inventory";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.add("x-api-key", "efomrddi"); // Add token if needed
@@ -335,7 +332,7 @@ public class InventoryTasks {
         LOGGER.info("Updating inventory for " + stock.getCode() + "\t " + stock.getIn_hand_quantity());
 
         HttpResponse<String> response = Unirest
-                .patch("https://stag.api.cloud.serenity.health/v2/inventory/" + stock.getUuid())
+                .patch("http://stag.api.cloud.serenity.health/v2/inventory/" + stock.getUuid())
                 .header("Content-Type", "application/json")
                 .header("x-api-key", "efomrddi")
                 // .header("Authorization", "Bearer "+serenityToken) // Add token if needed
@@ -350,7 +347,7 @@ public class InventoryTasks {
             throws RestClientException, UnsupportedEncodingException {
         LOGGER.info("Updating inventory for " + stock.getCode() + "\t " + stock.getIn_hand_quantity());
 
-        String url = "https://stag.api.cloud.serenity.health/v2/inventory";
+        String url = "http://stag.api.cloud.serenity.health/v2/inventory";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.add("x-api-key", "efomrddi");
@@ -371,7 +368,7 @@ public class InventoryTasks {
         String json = gson.toJson(inventory);
         System.err.println(json);
 
-        String endpoint = "https://staging-erp.nyaho.tech/api/resource/Delivery Note";
+        String endpoint = "http://staging-erp.nyaho.tech/api/resource/Delivery Note";
         HttpHeaders headers = new HttpHeaders();
 
         headers.set("Content-Type", "application/json");
@@ -399,7 +396,7 @@ public class InventoryTasks {
         headers.put("accept", "application/json");
         headers.put("x-api-key", "efomrddi");
 
-        HttpResponse<JsonNode> jsonResponse = Unirest.get("https://stag.api.cloud.serenity.health/v2/inventory")
+        HttpResponse<JsonNode> jsonResponse = Unirest.get("http://stag.api.cloud.serenity.health/v2/inventory")
                 .headers(headers)
                 .queryString("code", code)
                 .queryString("location_name", location)
@@ -414,7 +411,7 @@ public class InventoryTasks {
         headers.put("accept", "application/json");
         headers.put("x-api-key", "efomrddi");
 
-        HttpResponse<JsonNode> jsonResponse = Unirest.get("https://stag.api.cloud.serenity.health/v2/inventory")
+        HttpResponse<JsonNode> jsonResponse = Unirest.get("http://stag.api.cloud.serenity.health/v2/inventory")
                 .headers(headers)
                 .queryString("code", item.getCode())
                 .queryString("location_name", item.getLocation_name())
@@ -448,7 +445,7 @@ public class InventoryTasks {
                 .queryString("code", item.getCode())
                 .queryString("location_name", item.getLocation_name())
                 .asJson();
-        System.err.println(jsonResponse.getBody().toPrettyString());
+        System.err.println(jsonResponse.getBody().toPrettyString()+" ----data");
         SerenityInventoryResponse response = new SerenityInventoryResponse();
 
         if (jsonResponse.getBody().getObject().getInt("total") > 0) {
@@ -478,7 +475,7 @@ public class InventoryTasks {
             headers.put("accept", "application/json");
             headers.put("x-api-key", "efomrddi");
 
-            HttpResponse<JsonNode> jsonResponse = Unirest.get("https://stag.api.cloud.serenity.health/v2/inventory")
+            HttpResponse<JsonNode> jsonResponse = Unirest.get("http://stag.api.cloud.serenity.health/v2/inventory")
                     .headers(headers)
                     .queryString("code", stock.getCode())
                     .queryString("location_name", location)
