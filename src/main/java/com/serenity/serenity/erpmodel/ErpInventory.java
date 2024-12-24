@@ -28,4 +28,7 @@ public class ErpInventory {
     private String batchNumber;
     @SerializedName("conversion_factor") 
     private String conversionFactor;
+
+
+
 }

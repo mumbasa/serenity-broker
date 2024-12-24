@@ -13,9 +13,9 @@ import lombok.ToString;
 @ToString
 public class SerenityLocation {
 
- @SerializedName("locationId")
+ @SerializedName("location_id")
     private String locationId;
     
-    @SerializedName("locationName")
+    @SerializedName("location_name")
     private String locationName;
 }

@@ -33,6 +33,7 @@ public class Utility {
             item.setReason(payload.getPurpose());
             item.setSellingPrice(inv.getSellingRate());
             item.setBatchNumber(inv.getBatchNumber());
+            
             try{
             item.setSourceName(Utility.getLocationDetails(payload.getFromWarehouse()).getLocationName());
             item.setSourceId(Utility.getLocationDetails(payload.getFromWarehouse()).getLocationId());
@@ -159,12 +160,13 @@ public class Utility {
         Type listType = new TypeToken<ArrayList<SerenityLocation>>() {
         }.getType();
         ArrayList<SerenityLocation> serenitylocations = gson.fromJson(serenityLocation, listType);
+System.err.println(serenitylocations);
 
         String[] erpNextLocation = {"Pharmacy - Octagon - NMC", "Pharmacy - Airport Primary Care - NMC", "Pharmacy - Tema - NMC", "Pharmacy - Takoradi - NMC", "Main Pharmacy - Airport Main - NMC","Ward Pharmacy - Airport Main - NMC"};
         Map<String, String> locations = new HashMap<>();
 
         for (int i = 0; i < erpNextLocation.length; i++) {
-            SerenityLocation location = new SerenityLocation(serenitylocations.get(i).getLocationId(), serenitylocations.get(i).getLocationName());
+         //   SerenityLocation location = new SerenityLocation(serenitylocations.get(i).getLocationId(), serenitylocations.get(i).getLocationName());
             locations.put(serenitylocations.get(i).getLocationName(),erpNextLocation[i]);
         }
 

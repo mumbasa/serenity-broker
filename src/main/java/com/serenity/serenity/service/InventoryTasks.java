@@ -368,7 +368,7 @@ public class InventoryTasks {
         String json = gson.toJson(inventory);
         System.err.println(json);
 
-        String endpoint = "https://staging-erp.nyaho.tech/api/resource/Delivery Note";
+      /*   String endpoint = "https://staging-erp.nyaho.tech/api/resource/Delivery Note";
         HttpHeaders headers = new HttpHeaders();
 
         headers.set("Content-Type", "application/json");
@@ -388,7 +388,8 @@ public class InventoryTasks {
             e.printStackTrace();
             return "failed";
         }
-
+ */
+return "ues";
     }
 
     public String stockCounter2(String code,String location) {

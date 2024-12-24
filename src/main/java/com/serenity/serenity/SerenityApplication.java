@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.util.ResourceUtils;
 
 import com.serenity.serenity.service.InventoryTasks;
+import com.serenity.serenity.utilities.Utility;
 
 import jakarta.annotation.PostConstruct;
 
@@ -65,8 +66,8 @@ try{
         } */
 @PostConstruct
   public void loaders(){
-
-   System.err.println(tasks.stockCounter2("PRESCRIPTION-PADS-NEW","Tema Primary Care"));
+System.err.println(Utility.getErpnextLocation("Airport Main"));
+   //System.err.println(tasks.stockCounter2("PRESCRIPTION-PADS-NEW","Tema Primary Care"));
       //System.err.println(tasks.stockCounter2("PAIN-KIT-NEW","Tema Primary Care"));
       
    
