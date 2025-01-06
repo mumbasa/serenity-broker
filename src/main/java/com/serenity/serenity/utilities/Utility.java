@@ -73,48 +73,22 @@ public class Utility {
 
 
 
-    /* public static List<Patient> getSerenityInventoryFromErp(List<Document> documents) {
-        List<Patient> items = new ArrayList<>();
-
-        for (Document inv : documents) {
-            Patient item = new Patient();
-            String[] lines = inv.getContent().split("\n");
-            item.setConfidence((1-(float)inv.getMetadata().get("distance"))*100);
-            for(String s : lines){
-                
-                try{
-                Field field = Patient.class.getDeclaredField(s.split(":")[0].strip());
-                field.setAccessible(true);
-                field.set(item, s.split(":")[1].strip());
-                }catch(Exception e ){
-                    System.err.println("Not Found\t"+s.split(":")[0].strip());
-
-                }
-            
-            }
-
-            items.add(item);
-
-        }
-        return items;
-
-    }
- */
+     
 
 
     public static SerenityLocation getLocationDetails(String locaton) {
-        String serenityLocation = "[{\"locationId\": \"6b46da79-5613-4827-91ae-f46aaf65d4da\",\"locationName\": \"Accra Central (Octagon)\"},"
-                + "{\"locationId\": \"23f59485-8518-4f4e-9146-d061dfe58175\",\"locationName\": \"Airport Primary Care\"},"
-                + "{\"locationId\": \"b60c55f5-63dd-4ba2-9fe9-8192f57aaed2\",\"locationName\": \"Tema Primary Care\"},"
-                + "{\"locationId\": \"a79ae42b-03b7-4f5e-ac1a-cd42729c0b04\",\"locationName\": \"Takoradi Primary Care\"},"
-                + "{\"locationId\": \"29e22113-9d7b-46a6-a857-810ca3567ca7\",\"locationName\": \"Airport Main\"},"
-                + "{\"locationId\": \"2550dc16-3f64-4cee-b808-6c13b255d159\",\"locationName\": \"Ward - Airport Main\"}"+
+        String serenityLocation = "[{\"location_id\": \"6b46da79-5613-4827-91ae-f46aaf65d4da\",\"location_name\": \"Accra Central (Octagon)\"},"
+                + "{\"location_id\": \"23f59485-8518-4f4e-9146-d061dfe58175\",\"location_name\": \"Airport Primary Care\"},"
+                + "{\"location_id\": \"b60c55f5-63dd-4ba2-9fe9-8192f57aaed2\",\"location_name\": \"Tema Primary Care\"},"
+                + "{\"location_id\": \"a79ae42b-03b7-4f5e-ac1a-cd42729c0b04\",\"location_name\": \"Takoradi Primary Care\"},"
+                + "{\"location_id\": \"29e22113-9d7b-46a6-a857-810ca3567ca7\",\"location_name\": \"Airport Main\"},"
+                + "{\"location_id\": \"2550dc16-3f64-4cee-b808-6c13b255d159\",\"location_name\": \"Ward - Airport Main\"}"+
                 "]";
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<SerenityLocation>>() {
         }.getType();
         ArrayList<SerenityLocation> serenitylocations = gson.fromJson(serenityLocation, listType);
-
+        System.err.println(serenitylocations);
         String[] erpNextLocation = {"Pharmacy - Octagon - NMC", "Pharmacy - Airport Primary Care - NMC", "Pharmacy - Tema - NMC", "Pharmacy - Takoradi - NMC", "Main Pharmacy - Airport Main - NMC","Ward Pharmacy - Airport Main - NMC"};
         Map<String, SerenityLocation> locations = new HashMap<>();
 
@@ -175,14 +149,6 @@ System.err.println(serenitylocations);
     }
 
     public static void main(String[] args) {
-        Patient p = new Patient();
-        try{
-        Field name =Patient.class.getDeclaredField("name");
-        name.setAccessible(true);
-        name.set(p, "fafa");
-    }catch(Exception e){
-
-    }
-    System.err.println(p.getName());
-    }
+      System.err.println(Utility.getLocationDetails("Main Pharmacy - Airport Main - NMC"));
+}
 }
