@@ -68,8 +68,9 @@ try{
   public void loaders(){
 //System.err.println(Utility.getErpnextLocation("Airport Main"));
    //System.err.println(tasks.stockCounter2("PRESCRIPTION-PADS-NEW","Tema Primary Care"));
-      System.err.println(tasks.stockCounter2("ORS-NEW","Accra Central (Octagon)"));
-      
+      //System.err.println(tasks.stockCounter2("ORS-NEW","Accra Central (Octagon)"));
+      System.err.println(tasks.getLocation("octagon"));
+
    
   // System.err.println(tasks.stockCounter2("PROMAN-NEW","Airport Main"));
    //   System.err.println(tasks.stockCounter2("PROMAN-NEW","Tema Primary Care"));

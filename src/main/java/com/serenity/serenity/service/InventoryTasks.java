@@ -530,4 +530,17 @@ public class InventoryTasks {
 
     }
 
+
+    public String getLocation(String location) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("accept", "application/json");
+        headers.put("x-api-key", "efomrddi");
+
+        HttpResponse<JsonNode> jsonResponse = Unirest.get("https://stag.api.cloud.serenity.health/v2/locations?search="+location)
+                .headers(headers)
+                         .asJson();
+        return (jsonResponse.getBody().toPrettyString());
+
+            }
+
 }
