@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.concurrent.ExecutionException;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -18,6 +18,10 @@ import com.serenity.serenity.erpmodel.UpdatePayload;
 import com.serenity.serenity.model.SerenityInventoryItem;
 import com.serenity.serenity.model.SerenityLocation;
 
+import kong.unirest.core.HttpResponse;
+import kong.unirest.core.JsonNode;
+import kong.unirest.core.Unirest;
+
 public class Utility {
 
     public static List<SerenityInventoryItem> getSerenityInventoryFromErp(ErpNextPayload payload) {
@@ -25,8 +29,10 @@ public class Utility {
 
         for (ErpInventory inv : payload.getItems()) {
             SerenityInventoryItem item = new SerenityInventoryItem();
-            item.setLocation_name(Utility.getLocationDetails(payload.getToWarehouse()).getLocationName());
-            item.setLocation_id(Utility.getLocationDetails(payload.getToWarehouse()).getLocationId());
+            SerenityLocation sereloc =getSerenityLocation(payload.getToWarehouse());
+
+            item.setLocation_name(sereloc.getLocationName());
+            item.setLocation_id(sereloc.getLocationId());
             item.setName(inv.getItemName());
             item.setCode(inv.getItemCode());
             item.setIn_hand_quantity((int) Double.parseDouble(inv.getQty()));
@@ -35,8 +41,10 @@ public class Utility {
             item.setBatchNumber(inv.getBatchNumber());
             
             try{
-            item.setSourceName(Utility.getLocationDetails(payload.getFromWarehouse()).getLocationName());
-            item.setSourceId(Utility.getLocationDetails(payload.getFromWarehouse()).getLocationId());
+                SerenityLocation fromWarehouse =getSerenityLocation(payload.getFromWarehouse());
+
+            item.setSourceName(fromWarehouse.getLocationName());
+            item.setSourceId(fromWarehouse.getLocationId());
             }catch(NullPointerException e){
                 System.err.println("This is stores");
 
@@ -54,10 +62,11 @@ public class Utility {
         List<SerenityInventoryItem> items = new ArrayList<>();
 
         for (UpdateItem inv : update.getItems()) {
+            SerenityLocation sereloc =getSerenityLocation(update.getWarehouse());
             SerenityInventoryItem item = new SerenityInventoryItem();
             System.err.println(update.getWarehouse() +" warehouse");
-            item.setLocation_name(Utility.getLocationDetails(update.getWarehouse()).getLocationName());
-            item.setLocation_id(Utility.getLocationDetails(update.getWarehouse()).getLocationId());
+            item.setLocation_name(sereloc.getLocationName());
+            item.setLocation_id(sereloc.getLocationId());
             item.setName(inv.getItemName());
             item.setCode(inv.getItemCode());
             item.setIn_hand_quantity((int)(inv.getQuantity()));
@@ -72,9 +81,34 @@ public class Utility {
     }
 
 
+    public static SerenityLocation  getSerenityLocation( String locationId) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("accept", "application/json");
+        headers.put("x-api-key", "efomrddi");
 
-     
+        HttpResponse<JsonNode> jsonResponse = Unirest
+                .get("https://stag.api.cloud.serenity.health/v2/locations?external_id=" + locationId)
+                .headers(headers)
+                .asJson();
+              System.err.println( jsonResponse.getBody().toPrettyString());
+        return  new SerenityLocation(jsonResponse);
 
+    }
+
+
+    public static String  getERPNextLocation( String locationId) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("accept", "application/json");
+        headers.put("x-api-key", "efomrddi");
+
+        HttpResponse<JsonNode> jsonResponse = Unirest
+                .get("https://stag.api.cloud.serenity.health/v2/locations/" + locationId)
+                .headers(headers)
+                .asJson();
+              System.err.println( jsonResponse.getBody().toPrettyString());
+        return  jsonResponse.getBody().getObject().getString("external_id");
+
+    }
 
     public static SerenityLocation getLocationDetails(String locaton) {
         String serenityLocation = "[{\"location_id\": \"6b46da79-5613-4827-91ae-f46aaf65d4da\",\"location_name\": \"Accra Central (Octagon)\"},"
@@ -149,6 +183,12 @@ System.err.println(serenitylocations);
     }
 
     public static void main(String[] args) {
+        String a =null;
+        try{
+        System.err.println(a.replaceAll("a", ""));}
+        catch (Exception t){
+            System.err.println("hsit");
+        }
       System.err.println(Utility.getLocationDetails("Main Pharmacy - Airport Main - NMC"));
 }
 }

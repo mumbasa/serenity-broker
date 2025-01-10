@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
+
 
 import com.google.gson.Gson;
 import com.serenity.serenity.data.his.SerenityInventoryStore;
@@ -31,6 +29,7 @@ import com.serenity.serenity.model.ErpNextIventory;
 import com.serenity.serenity.model.SerenityBroker;
 import com.serenity.serenity.model.SerenityInventoryItem;
 import com.serenity.serenity.model.SerenityInventoryResponse;
+import com.serenity.serenity.model.SerenityLocation;
 import com.serenity.serenity.model.SerenityStock;
 import com.serenity.serenity.repository.InventoryRepository;
 
@@ -61,8 +60,8 @@ public class InventoryTasks {
             stock.setExternal_system("erpnext");
             SerenityInventoryResponse res = stockCounter2(stock);
             if (res.getTotal() > 0) {
-                  // stock.setLocation_id(res.getData().get(0).getLocationId());
-                //stock.setLocation_name(res.getData().get(0).getLocationName());
+                // stock.setLocation_id(res.getData().get(0).getLocationId());
+                // stock.setLocation_name(res.getData().get(0).getLocationName());
                 oldEtries.add(stock);
 
             } else {
@@ -388,10 +387,10 @@ public class InventoryTasks {
             e.printStackTrace();
             return "failed";
         }
- 
+
     }
 
-    public String stockCounter2(String code,String location) {
+    public String stockCounter2(String code, String location) {
         Map<String, String> headers = new HashMap<>();
         headers.put("accept", "application/json");
         headers.put("x-api-key", "efomrddi");
@@ -420,12 +419,15 @@ public class InventoryTasks {
         SerenityInventoryResponse response = new SerenityInventoryResponse();
 
         if (jsonResponse.getBody().getObject().getInt("total") > 0) {
-          
-           // int qty = (int) (jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getInt("in_hand_quantity"));
-            //item.setIn_hand_quantity(qty);
+
+            // int qty = (int)
+            // (jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getInt("in_hand_quantity"));
+            // item.setIn_hand_quantity(qty);
             item.setUuid(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("uuid"));
-            item.setLocation_id(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("location_id"));
-            item.setLocation_name(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("location_name"));
+            item.setLocation_id(
+                    jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("location_id"));
+            item.setLocation_name(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0)
+                    .getString("location_name"));
 
             response.setTotal(jsonResponse.getBody().getObject().getInt("total"));
             response.setSize(jsonResponse.getBody().getObject().getInt("size"));
@@ -433,7 +435,6 @@ public class InventoryTasks {
 
         return response;
     }
-
 
     public SerenityInventoryResponse stockCounter2(SerenityInventoryItem item) {
         Map<String, String> headers = new HashMap<>();
@@ -445,16 +446,19 @@ public class InventoryTasks {
                 .queryString("code", item.getCode())
                 .queryString("location_name", item.getLocation_name())
                 .asJson();
-        System.err.println(jsonResponse.getBody().toPrettyString()+" ----data");
+        System.err.println(jsonResponse.getBody().toPrettyString() + " ----data");
         SerenityInventoryResponse response = new SerenityInventoryResponse();
 
         if (jsonResponse.getBody().getObject().getInt("total") > 0) {
-          
-            int qty = (int) (jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getInt("in_hand_quantity") + item.getIn_hand_quantity());
+
+            int qty = (int) (jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0)
+                    .getInt("in_hand_quantity") + item.getIn_hand_quantity());
             item.setIn_hand_quantity(qty);
             item.setUuid(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("uuid"));
-            item.setLocation_id(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("location_id"));
-            item.setLocation_name(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("location_name"));
+            item.setLocation_id(
+                    jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0).getString("location_id"));
+            item.setLocation_name(jsonResponse.getBody().getObject().getJSONArray("data").getJSONObject(0)
+                    .getString("location_name"));
 
             response.setTotal(jsonResponse.getBody().getObject().getInt("total"));
             response.setSize(jsonResponse.getBody().getObject().getInt("size"));
@@ -530,17 +534,47 @@ public class InventoryTasks {
 
     }
 
-
-    public String getLocation(String location) {
+    
+    public static String getLocation(String location) {
         Map<String, String> headers = new HashMap<>();
         headers.put("accept", "application/json");
         headers.put("x-api-key", "efomrddi");
 
-        HttpResponse<JsonNode> jsonResponse = Unirest.get("https://stag.api.cloud.serenity.health/v2/locations?search="+location)
+        HttpResponse<JsonNode> jsonResponse = Unirest
+                .get("https://stag.api.cloud.serenity.health/v2/locations/" + location)
                 .headers(headers)
-                         .asJson();
+                .asJson();
         return (jsonResponse.getBody().toPrettyString());
 
-            }
+    }
+
+    public static String getLocation() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("accept", "application/json");
+        headers.put("x-api-key", "efomrddi");
+
+        HttpResponse<JsonNode> jsonResponse = Unirest.get("https://stag.api.cloud.serenity.health/v2/locations")
+                .headers(headers)
+                .asJson();
+        return (jsonResponse.getBody().toPrettyString());
+
+    }
+
+    
+
+
+    public static String getErpNextLocation( String locationId) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("accept", "application/json");
+        headers.put("x-api-key", "efomrddi");
+
+        HttpResponse<JsonNode> jsonResponse = Unirest
+                .get("https://stag.api.cloud.serenity.health/v2/locations?external_id=" + locationId)
+                .headers(headers)
+                .asJson();
+              System.err.println( jsonResponse.getRequestSummary().asString());
+        return (jsonResponse.getBody().toPrettyString());
+
+    }
 
 }
