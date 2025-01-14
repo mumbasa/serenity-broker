@@ -53,7 +53,7 @@ public class InventoryListener {
 
     }
 
-    @RabbitListener(queues = "serenity", concurrency = "1", containerFactory = "createRabbitListenerFactory")
+    @RabbitListener(queues = "serenity", concurrency = "5", containerFactory = "createRabbitListenerFactory")
     public void getBillInfo(String message) throws  UnsupportedEncodingException {
         LOGGER.info(message);
        try{
