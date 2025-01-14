@@ -70,8 +70,8 @@ try{
    //System.err.println(tasks.stockCounter2("PRESCRIPTION-PADS-NEW","Tema Primary Care"));
       //System.err.println(tasks.stockCounter2("ORS-NEW","Accra Central (Octagon)"));
       
-      System.err.println(Utility.getSerenityLocation("Main Pharmacy - Airport Main - NMC"));
-      System.err.println(Utility.getERPNextLocation("a196cc67-d4a8-486f-871b-3d0fcb227a8f"));
+     System.err.println(Utility.getSerenityLocation("Pharmacy - Tema - NMC"));
+   //   System.err.println(Utility.getERPNextLocation("a196cc67-d4a8-486f-871b-3d0fcb227a8f"));
 
    
   // System.err.println(tasks.stockCounter2("PROMAN-NEW","Airport Main"));

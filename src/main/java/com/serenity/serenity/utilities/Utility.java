@@ -74,9 +74,7 @@ public class Utility {
             item.setReason(update.getPurpose());
             item.setSellingPrice(inv.getSellingRate());
             items.add(item);
-         
-
-        }
+           }
         return items;
 
     }
@@ -93,6 +91,22 @@ public class Utility {
                 .asJson();
               System.err.println( jsonResponse.getBody().toPrettyString());
         return  new SerenityLocation(jsonResponse);
+
+    }
+
+
+
+    public static String getSerenityLocation() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("accept", "application/json");
+        headers.put("x-api-key", "efomrddi");
+       // System.err.println(locationId +"-------------");
+        HttpResponse<JsonNode> jsonResponse = Unirest
+                .get("https://stag.api.cloud.serenity.health/v2/locations")
+                .headers(headers)
+                .asJson();
+              System.err.println( jsonResponse.getBody().toPrettyString());
+        return  jsonResponse.getBody().toPrettyString();
 
     }
 
