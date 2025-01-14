@@ -47,6 +47,7 @@ public class InventoryListener {
                 System.err.println("default");
         }
     }catch(Exception e){
+        e.printStackTrace();
         System.err.println("wrong format =>"+message);
     }
 

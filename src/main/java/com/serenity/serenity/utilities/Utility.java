@@ -41,11 +41,12 @@ public class Utility {
             item.setBatchNumber(inv.getBatchNumber());
             
             try{
-                SerenityLocation fromWarehouse =getSerenityLocation(payload.getFromWarehouse());
+                
+            SerenityLocation fromWarehouse =getSerenityLocation(payload.getFromWarehouse());
 
             item.setSourceName(fromWarehouse.getLocationName());
             item.setSourceId(fromWarehouse.getLocationId());
-            }catch(NullPointerException e){
+            }catch(Exception e){
                 System.err.println("This is stores");
 
             }
@@ -85,7 +86,7 @@ public class Utility {
         Map<String, String> headers = new HashMap<>();
         headers.put("accept", "application/json");
         headers.put("x-api-key", "efomrddi");
-
+        System.err.println(locationId +"-------------");
         HttpResponse<JsonNode> jsonResponse = Unirest
                 .get("https://stag.api.cloud.serenity.health/v2/locations?external_id=" + locationId)
                 .headers(headers)

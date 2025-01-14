@@ -534,47 +534,4 @@ public class InventoryTasks {
 
     }
 
-    
-    public static String getLocation(String location) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("accept", "application/json");
-        headers.put("x-api-key", "efomrddi");
-
-        HttpResponse<JsonNode> jsonResponse = Unirest
-                .get("https://stag.api.cloud.serenity.health/v2/locations/" + location)
-                .headers(headers)
-                .asJson();
-        return (jsonResponse.getBody().toPrettyString());
-
-    }
-
-    public static String getLocation() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("accept", "application/json");
-        headers.put("x-api-key", "efomrddi");
-
-        HttpResponse<JsonNode> jsonResponse = Unirest.get("https://stag.api.cloud.serenity.health/v2/locations")
-                .headers(headers)
-                .asJson();
-        return (jsonResponse.getBody().toPrettyString());
-
-    }
-
-    
-
-
-    public static String getErpNextLocation( String locationId) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("accept", "application/json");
-        headers.put("x-api-key", "efomrddi");
-
-        HttpResponse<JsonNode> jsonResponse = Unirest
-                .get("https://stag.api.cloud.serenity.health/v2/locations?external_id=" + locationId)
-                .headers(headers)
-                .asJson();
-              System.err.println( jsonResponse.getRequestSummary().asString());
-        return (jsonResponse.getBody().toPrettyString());
-
-    }
-
 }

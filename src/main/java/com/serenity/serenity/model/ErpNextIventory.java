@@ -35,7 +35,7 @@ public class ErpNextIventory {
         this.setPlc_conversion_rate(1);
         this.setDelivery_date(LocalDate.now().toString());
         this.setDocstatus(1);
-        this.setSet_warehouse(Utility.getERPNextLocation(payload.getLocation_name()));
+        this.setSet_warehouse(Utility.getERPNextLocation(payload.getLocation_id()));
         //preventing dispensing items not in erpnext
         payload.items.forEach(e ->{ 
             try{
